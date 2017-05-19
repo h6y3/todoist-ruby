@@ -40,13 +40,13 @@ Generally speaking collaboration features are not supported through this API but
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'todoist'
+gem 'todoist-ruby'
 ```
 
 or install from source
 
 ```ruby
-gem "todoist", :git => "git://github.com/h6y3/todoist-ruby.git"
+gem "todoist-ruby", :git => "git://github.com/h6y3/todoist-ruby.git"
 ```
 
 And then execute:
@@ -55,7 +55,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install todoist
+    $ gem install todoist-ruby
 
 ## Usage
 
