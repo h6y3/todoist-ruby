@@ -59,7 +59,11 @@ Or install it yourself as:
 
 ## Usage
 
-This section provides some simple scenarios to get started.  For more information, see the Wiki for detailed examples.
+This section provides some simple scenarios to get started.  To use the library make sure you include the library as follows:
+
+```ruby
+require todoist
+```
 
 ### Logging in and setting tokens
 

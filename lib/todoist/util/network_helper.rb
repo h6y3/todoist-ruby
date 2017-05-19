@@ -3,7 +3,6 @@ require "json"
 require "todoist/util/config"
 require 'net/http/post/multipart'
 require 'mimemagic'
-require 'pry'
 
 module Todoist
   module Util
