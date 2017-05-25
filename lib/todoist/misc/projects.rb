@@ -6,7 +6,7 @@ module Todoist
         # Get archived projects.  Returns projects as documented here.
         def get_archived_projects()
           result = NetworkHelper.getResponse(Config::TODOIST_PROJECTS_GET_ARCHIVED_COMMAND)
-          return ParseHelper.make_objects_as_array(result)
+          return ParseHelper.make_objects_as_hash(result)
         end
         
         # Gets project information including all notes.
@@ -15,7 +15,7 @@ module Todoist
           result = NetworkHelper.getResponse(Config::TODOIST_PROJECTS_GET_COMMAND, {project_id: project.id, all_data: true})
           
           project = result["project"] ? ParseHelper.make_object(result["project"]) : nil
-          notes = result["notes"] ? ParseHelper.make_objects_as_array(result["notes"]) : nil
+          notes = result["notes"] ? ParseHelper.make_objects_as_hash(result["notes"]) : nil
           return {"project" => project, "notes" => notes}
         end
         
@@ -23,7 +23,7 @@ module Todoist
         def get_project_data(project)
           result = NetworkHelper.getResponse(Config::TODOIST_PROJECTS_GET_DATA_COMMAND, {project_id: project.id})
           project = result["project"] ? ParseHelper.make_object(result["project"]) : nil
-          items = result["items"] ? ParseHelper.make_objects_as_array(result["items"]) : nil
+          items = result["items"] ? ParseHelper.make_objects_as_hash(result["items"]) : nil
           return {"project" => project, "items" => items}
         end
     end

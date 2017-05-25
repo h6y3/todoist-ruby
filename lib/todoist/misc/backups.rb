@@ -6,7 +6,7 @@ module Todoist
         # Returns the backups for a user.
         def get()
           result = NetworkHelper.getResponse(Config::TODOIST_BACKUPS_GET_COMMAND, {})
-          ParseHelper.make_objects_as_array(result)
+          ParseHelper.make_objects_as_hash(result)
         end
     end
   end

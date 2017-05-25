@@ -190,6 +190,11 @@ rake spec:clean["misc_items"]
 
 Once tests pass cleanly, subsquent runs that do not change the network requests run quickly since no network calls are made and in fact ```rake``` can be run with no issues.
 
+## Version History
+
+* 0.1.2: Renamed method ```Todoist::Util::ParseHelper.make_objects_as_array``` to ```Todoist::Util::ParseHelper.make_objects_as_hash``` to reflect the fact that it was actually returning hashes.  Added the aforementioned deleted method to return arrays and finally altered ```Todoist::Misc::Completed``` to return objects as arrays instead of hashes due to the fact that recurring completed items were being de-duped unintentionally and data was being lost as a result.
+* 0.1.1: Initial release.
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/h6y3/todoist-ruby. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.

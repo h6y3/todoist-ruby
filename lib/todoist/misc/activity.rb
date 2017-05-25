@@ -44,7 +44,7 @@ module Todoist
           end
             
           result = NetworkHelper.getResponse(Config::TODOIST_ACTIVITY_GET_COMMAND, params)
-          ParseHelper.make_objects_as_array(result)
+          ParseHelper.make_objects_as_hash(result)
         end
     end
   end

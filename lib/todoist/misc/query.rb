@@ -14,7 +14,7 @@ module Todoist
         def queries(queries)
           result = NetworkHelper.getResponse(Config::TODOIST_QUERY_COMMAND, 
             queries: queries.to_json)
-          return ParseHelper.make_objects_as_array(result, "query")
+          return ParseHelper.make_objects_as_hash(result, "query")
         end
         
         # Given a query, return result.  See return structure in comments above.

@@ -46,7 +46,7 @@ module Todoist
           result = NetworkHelper.getResponse(Config::TODOIST_ITEMS_GET_COMMAND, params)
           item = ParseHelper.make_object(result["item"])
           project = ParseHelper.make_object(result["project"])
-          notes = result["notes"] ? ParseHelper.make_objects_as_array(result["notes"]) : nil
+          notes = result["notes"] ? ParseHelper.make_objects_as_hash(result["notes"]) : nil
           return {"item" => item, "project" => project, "notes" => notes}
         end
         
