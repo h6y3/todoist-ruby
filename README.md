@@ -62,7 +62,7 @@ Or install it yourself as:
 This section provides some simple scenarios to get started.  To use the library make sure you include the library as follows:
 
 ```ruby
-require todoist
+require 'todoist'
 ```
 
 ### Logging in and setting tokens
