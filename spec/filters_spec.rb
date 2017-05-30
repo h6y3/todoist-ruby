@@ -33,7 +33,7 @@ describe Todoist::Sync::Filters do
       queried_object = filters_list[add_filter.id]
       expect(queried_object.name).to eq("FilterTest")
       queried_object.name = "FilterTestUpdate"
-      @filters_manager.update(queried_object)
+      @filters_manager.update({id: queried_object.id, name: queried_object.name})
       filters_list =  @filters_manager.collection
       queried_object = filters_list[queried_object.id]
       expect(queried_object.name).to eq("FilterTestUpdate")

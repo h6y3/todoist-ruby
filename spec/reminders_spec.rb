@@ -36,7 +36,7 @@ describe Todoist::Sync::Reminders do
       expect(queried_object.item_id).to eq(reminder_item.id)
       expect(queried_object.service).to eq("email")
       queried_object.service = "mobile"
-      @reminders_manager.update(queried_object)
+      @reminders_manager.update({id: queried_object.id, service: queried_object.service})
       reminders_list =  @reminders_manager.collection
       queried_object = reminders_list[queried_object.id]
       expect(queried_object.service).to eq("mobile")

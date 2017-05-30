@@ -13,9 +13,9 @@ module Todoist
           return ApiHelper.add(args, "label_add")
         end
 
-        # Update label given a label
-        def update(label)
-          return ApiHelper.command(label.to_h, "label_update")
+        # Update label given a hash of attributes
+        def update(args)
+          return ApiHelper.command(args, "label_update")
         end
 
         # Delete a label given a label

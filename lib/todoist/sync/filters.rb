@@ -17,9 +17,9 @@ module Todoist
           return ApiHelper.add(args, "filter_add")
         end
 
-        # Update a filter given a filter
-        def update(filter)
-          return ApiHelper.command(filter.to_h, "filter_update")
+        # Update a filter given a hash of attributes
+        def update(args)
+          return ApiHelper.command(args, "filter_update")
         end
 
         # Delete filter given an array of filters

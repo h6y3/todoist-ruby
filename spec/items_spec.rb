@@ -28,7 +28,7 @@ describe Todoist::Sync::Items do
       update_item = @item_manager.add({content: "Item3"})      
       expect(update_item).to be_truthy
       update_item.priority = 2
-      result = @item_manager.update(update_item)
+      result = @item_manager.update({id: update_item.id, priority: update_item.priority})
       expect(result).to be_truthy
       items_list =  @item_manager.collection
       queried_object = items_list[update_item.id]

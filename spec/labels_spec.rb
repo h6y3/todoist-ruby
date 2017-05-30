@@ -37,7 +37,7 @@ describe Todoist::Sync::Labels do
       update_label = @labels_manager.add({name: "Labels3"})      
       expect(update_label).to be_truthy
       update_label.color = 2
-      result = @labels_manager.update(update_label)
+      result = @labels_manager.update({id: update_label.id, color: update_label.color})
       expect(result).to be_truthy
       labels_list =  @labels_manager.collection
       queried_object = labels_list[update_label.id]

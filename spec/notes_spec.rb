@@ -34,7 +34,7 @@ describe Todoist::Sync::Notes do
       expect(queried_object.item_id).to eq(note_item.id)
       expect(queried_object.content).to eq("NoteForItemNoteTest")
       queried_object.content = "NoteForItemNoteTestUpdate"
-      @notes_manager.update(queried_object)
+      @notes_manager.update({id: queried_object.id, content: "NoteForItemNoteTestUpdate"})
       notes_list =  @notes_manager.collection
       queried_object = notes_list[queried_object.id]
       expect(queried_object.content).to eq("NoteForItemNoteTestUpdate")

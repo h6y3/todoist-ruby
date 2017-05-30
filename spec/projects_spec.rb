@@ -46,7 +46,7 @@ describe Todoist::Sync::Projects do
     VCR.use_cassette("projects_is_able_to_update_a_project") do    
       update_project = @projects_manager.add({name: "Project4"})
       update_project.indent = 2
-      result = @projects_manager.update(update_project)
+      result = @projects_manager.update(id: update_project.id, indent: update_project.indent)
       expect(result).to be_truthy
       queried_object = @projects_manager.collection[update_project.id]
       expect(queried_object.indent).to eq(2)

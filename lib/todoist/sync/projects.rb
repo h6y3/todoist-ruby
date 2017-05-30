@@ -36,9 +36,9 @@ module Todoist
         return ApiHelper.command(args, "project_unarchive")
       end
 
-      # Update project given a project
-      def update(project)
-        return ApiHelper.command(project.to_h, "project_update")
+      # Update project given a hash of attributes
+      def update(args)
+        return ApiHelper.command(args, "project_update")
       end
 
       # Update orders and indents for an array of projects

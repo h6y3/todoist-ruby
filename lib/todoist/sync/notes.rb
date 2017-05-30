@@ -15,9 +15,9 @@ module Todoist
           return ApiHelper.add(args, "note_add")
         end
 
-        # Update a note given a note
-        def update(note)
-          return ApiHelper.command(note.to_h, "note_update")
+        # Update a note given a hash of attributes
+        def update(args)
+          return ApiHelper.command(args, "note_update")
         end
 
         # Delete notes given an a note

@@ -15,9 +15,9 @@ module Todoist
           return ApiHelper.add(args, "reminder_add")
         end
 
-        # Update a reminder given a reminder
-        def update(reminder)
-          return ApiHelper.command(reminder.to_h, "reminder_update")
+        # Update a reminder given a hash of attributes
+        def update(args)
+          return ApiHelper.command(args, "reminder_update")
         end
 
         # Delete reminder given an array of reminders

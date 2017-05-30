@@ -13,9 +13,9 @@ module Todoist
           return ApiHelper.add(args, "item_add")
         end
 
-        # Update item given a item
-        def update(item)
-          return ApiHelper.command(item.to_h, "item_update")
+        # Update item given a hash of attributes
+        def update(args)
+          return ApiHelper.command(args, "item_update")
         end
 
         # Delete items given an array of items
