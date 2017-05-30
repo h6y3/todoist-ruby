@@ -192,7 +192,7 @@ Once tests pass cleanly, subsquent runs that do not change the network requests 
 
 ## Version History
 
-* 0.1.3: Changed Todoist::Sync managers so that the update method uses a hash instead of an OpenStruct.  The OpenStruct creates errors when an OpenStruct passed from a previous call is used.  The hash helps the caller make fewer mistakes.
+* 0.1.3: Changed ```Todoist::Sync``` managers so that the update method uses a hash instead of an OpenStruct.  The OpenStruct creates errors when an OpenStruct passed from a previous call is used.  The hash helps the caller make fewer mistakes.
 * 0.1.2: Renamed method ```Todoist::Util::ParseHelper.make_objects_as_array``` to ```Todoist::Util::ParseHelper.make_objects_as_hash``` to reflect the fact that it was actually returning hashes.  Added the aforementioned deleted method to return arrays and finally altered ```Todoist::Misc::Completed``` to return objects as arrays instead of hashes due to the fact that recurring completed items were being de-duped unintentionally and data was being lost as a result.
 * 0.1.1: Initial release.
 
