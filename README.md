@@ -85,7 +85,7 @@ Upon calling the login method, an object is returned implemented through an [Ope
 New tokens can be generated at the [Todoist App Management portal](https://developer.todoist.com/appconsole.html).  Once a token has been acquired simply set it as so:
 
 ```ruby
-Todoist::Config.token = "my token"
+Todoist::Util::Config.token = "my token"
 ```
 
 ### Using the sync API
