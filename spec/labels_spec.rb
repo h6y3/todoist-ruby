@@ -13,20 +13,20 @@ describe Todoist::Sync::Labels do
   end  
 
   before do
-    @labels_manager = Todoist::Sync::Labels.new
-    @label = @labels_manager.add({name: "Label1"})
+    @client = load_client  
+    @label = @client.sync_labels.add({name: "Label1"})
   end
 
   after do
     VCR.use_cassette("labels_after") do
-      @labels_manager.delete(@label)
+      @client.sync_labels.delete(@label)
       Todoist::Util::CommandSynchronizer.sync
     end
   end  
 
   it "is able to get labels" do
     VCR.use_cassette("labels_is_able_to_get_labels") do
-      labels = @labels_manager.collection
+      labels = @client.sync_labels.collection
       expect(labels).to be_truthy
     end
   end
@@ -34,15 +34,15 @@ describe Todoist::Sync::Labels do
   it "is able to update a label" do  
     VCR.use_cassette("labels_is_able_to_update_a_label") do
       
-      update_label = @labels_manager.add({name: "Labels3"})      
+      update_label = @client.sync_labels.add({name: "Labels3"})      
       expect(update_label).to be_truthy
       update_label.color = 2
-      result = @labels_manager.update({id: update_label.id, color: update_label.color})
+      result = @client.sync_labels.update({id: update_label.id, color: update_label.color})
       expect(result).to be_truthy
-      labels_list =  @labels_manager.collection
+      labels_list =  @client.sync_labels.collection
       queried_object = labels_list[update_label.id]
       expect(queried_object.color).to eq(2)
-      @labels_manager.delete(update_label)
+      @client.sync_labels.delete(update_label)
       Todoist::Util::CommandSynchronizer.sync  
       
     end
@@ -51,13 +51,13 @@ describe Todoist::Sync::Labels do
   it "is able to update multiple orders" do
     VCR.use_cassette("labels_is_able_to_update_multiple_orders") do
       # Add the various labels
-      label = @labels_manager.add({name: "Label3"})
+      label = @client.sync_labels.add({name: "Label3"})
       expect(label).to be_truthy
-      label2 = @labels_manager.add({name: "Label2"})
+      label2 = @client.sync_labels.add({name: "Label2"})
       
       # Restore the label fully
   
-      label_collection = @labels_manager.collection
+      label_collection = @client.sync_labels.collection
   
       label = label_collection[label.id]
       label2 = label_collection[label2.id]
@@ -70,8 +70,8 @@ describe Todoist::Sync::Labels do
       label2.item_order = label_order
   
   
-      @labels_manager.update_multiple_orders([label, label2])
-      label_collection = @labels_manager.collection
+      @client.sync_labels.update_multiple_orders([label, label2])
+      label_collection = @client.sync_labels.collection
   
       # Check to make sure newly retrieved object values match old ones
   
@@ -80,7 +80,7 @@ describe Todoist::Sync::Labels do
   
       # Clean up extra label
   
-      @labels_manager.delete(label2)
+      @client.sync_labels.delete(label2)
     end
   end
   

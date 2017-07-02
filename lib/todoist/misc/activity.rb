@@ -1,6 +1,6 @@
 module Todoist
   module Misc
-    class Activity
+    class Activity < Todoist::Service
         include Todoist::Util  
         
         # Returns the activity logs for a user.  Full list of supported 
@@ -16,11 +16,11 @@ module Todoist
         
         def get(params={})
           if params["until"]
-            params["until"] = ParseHelper.formatTime(params["until"])
+            params["until"] = ParseHelper.format_time(params["until"])
           end
           
           if params["since"]
-            params["since"] = ParseHelper.formatTime(params["since"])
+            params["since"] = ParseHelper.format_time(params["since"])
           end
           
           if params["object"]
@@ -43,7 +43,7 @@ module Todoist
             params.delete("initiator")
           end
             
-          result = NetworkHelper.getResponse(Config::TODOIST_ACTIVITY_GET_COMMAND, params)
+          result = @api_helper.get_response(Config::TODOIST_ACTIVITY_GET_COMMAND, params)
           ParseHelper.make_objects_as_hash(result)
         end
     end

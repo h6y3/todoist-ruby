@@ -14,12 +14,12 @@ describe Todoist::Misc::Backups do
   end  
 
   before do
-    @misc_backups_manager = Todoist::Misc::Backups.new
+    @client = load_client
   end
   
   it "is able to get backups" do
     VCR.use_cassette("misc_backups_is_able_to_get_backups") do
-      result = @misc_backups_manager.get
+      result = @client.misc_backups.get
       expect(result).to be_truthy
     end
   end

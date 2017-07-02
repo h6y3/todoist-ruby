@@ -13,13 +13,12 @@ describe Todoist::Sync::Filters do
   end  
 
   before do
-    @filters_manager = Todoist::Sync::Filters.new
-    @items_manager = Todoist::Sync::Items.new
+    @client = load_client    
   end
 
   it "is able to get filters" do
     VCR.use_cassette("filters_is_able_to_get_filters") do
-      filters = @filters_manager.collection
+      filters = @client.sync_filters.collection
       expect(filters).to be_truthy
     end
   end
@@ -27,18 +26,18 @@ describe Todoist::Sync::Filters do
   it "is able to add and update filter" do  
     VCR.use_cassette("filters_is_able_to_add_and_update_filter") do
 
-      add_filter = @filters_manager.add({name: "FilterTest", query: "tomorrow"})
+      add_filter = @client.sync_filters.add({name: "FilterTest", query: "tomorrow"})
       expect(add_filter).to be_truthy
-      filters_list =  @filters_manager.collection
+      filters_list =  @client.sync_filters.collection
       queried_object = filters_list[add_filter.id]
       expect(queried_object.name).to eq("FilterTest")
       queried_object.name = "FilterTestUpdate"
-      @filters_manager.update({id: queried_object.id, name: queried_object.name})
-      filters_list =  @filters_manager.collection
+      @client.sync_filters.update({id: queried_object.id, name: queried_object.name})
+      filters_list =  @client.sync_filters.collection
       queried_object = filters_list[queried_object.id]
       expect(queried_object.name).to eq("FilterTestUpdate")
       
-      @filters_manager.delete(add_filter)
+      @client.sync_filters.delete(add_filter)
       Todoist::Util::CommandSynchronizer.sync  
       
     end

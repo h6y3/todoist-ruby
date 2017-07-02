@@ -1,11 +1,11 @@
 module Todoist
   module Misc
-    class Backups
+    class Backups < Todoist::Service
         include Todoist::Util  
         
         # Returns the backups for a user.
         def get()
-          result = NetworkHelper.getResponse(Config::TODOIST_BACKUPS_GET_COMMAND, {})
+          result = @api_helper.get_response(Config::TODOIST_BACKUPS_GET_COMMAND, {})
           ParseHelper.make_objects_as_hash(result)
         end
     end

@@ -14,15 +14,12 @@ describe Todoist::Misc::Projects do
   end  
 
   before do
-    @misc_projects_manager = Todoist::Misc::Projects.new
-    @notes_manager = Todoist::Sync::Notes.new
-    @items_manager = Todoist::Sync::Items.new
-    @projects_manager = Todoist::Sync::Projects.new
+    @client = load_client
   end
   
   it "is able to get archived projects" do
     VCR.use_cassette("misc_projects_is_able_to_get_archived_projects") do
-      result = @misc_projects_manager.get_archived_projects
+      result = @client.misc_projects.get_archived_projects
       expect(result).to be_truthy
     end
   end
@@ -30,38 +27,38 @@ describe Todoist::Misc::Projects do
   it "is able to get project info and project data" do
     VCR.use_cassette("misc_projects_is_able_to_get_project_info_and_project_data") do
       # Create an item and a project
-      item = @items_manager.add({content: "Item3"})   
-      project = @projects_manager.add({name: "Project1"})
+      item = @client.sync_items.add({content: "Item3"})   
+      project = @client.sync_projects.add({name: "Project1"})
       Todoist::Util::CommandSynchronizer.sync
       
       # Add a note to the project
-      note = @notes_manager.add({content: "NoteForMiscProjectTest", project_id: project.id})
+      note = @client.sync_notes.add({content: "NoteForMiscProjectTest", project_id: project.id})
       
       # Move requires fully inflated object
-      items_list =  @items_manager.collection
+      items_list =  @client.sync_items.collection
       item = items_list[item.id]
       
       # Move the item to the project
-      @items_manager.move(item, project)
+      @client.sync_items.move(item, project)
       
       
       Todoist::Util::CommandSynchronizer.sync
       # Get project info
-      result = @misc_projects_manager.get_project_info(project)
+      result = @client.misc_projects.get_project_info(project)
       
       expect(result["project"]).to be_truthy
       expect(result["notes"]).to be_truthy
       
       # Get project data
-      result = @misc_projects_manager.get_project_data(project)
+      result = @client.misc_projects.get_project_data(project)
       expect(result["project"]).to be_truthy
       expect(result["items"]).to be_truthy
 
       # Clean up
       
-      @items_manager.delete([item])
-      @projects_manager.delete([project])
-      @notes_manager.delete(note)
+      @client.sync_items.delete([item])
+      @client.sync_projects.delete([project])
+      @client.sync_notes.delete(note)
       Todoist::Util::CommandSynchronizer.sync
     end
   end

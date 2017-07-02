@@ -5,14 +5,14 @@
 
 module Todoist
   module Misc
-    class Query
+    class Query < Todoist::Service
         include Todoist::Util 
 
         # Given an array of queries, return multiple results with key being the 
         # query results.  Query results have three key elements:  query, type, 
         # and data.  Data is where the items are stored.
         def queries(queries)
-          result = NetworkHelper.getResponse(Config::TODOIST_QUERY_COMMAND, 
+          result = @api_helper.get_response(Config::TODOIST_QUERY_COMMAND, 
             queries: queries.to_json)
           return ParseHelper.make_objects_as_hash(result, "query")
         end

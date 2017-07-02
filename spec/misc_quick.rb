@@ -14,16 +14,15 @@ describe Todoist::Misc::Items do
   end  
 
   before do
-    @misc_quick_manager = Todoist::Misc::Quick.new
-    @items_manager = Todoist::Sync::Items.new
+    @client = load_client  
   end
   
   it "is able to quick add an item" do
     VCR.use_cassette("quick_is_able_to_quick_add_an_item") do
-      item = @misc_quick_manager.add_item("Test quick add content today")
+      item = @client.misc_quick.add_item("Test quick add content today")
       expect(item).to be_truthy
       expect(item.due_date_utc).to be_truthy
-      @items_manager.delete([item])
+      @client.sync_items.delete([item])
       Todoist::Util::CommandSynchronizer.sync
     end
   end

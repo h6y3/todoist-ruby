@@ -1,6 +1,6 @@
 module Todoist
   module Misc
-    class Items
+    class Items < Todoist::Service
         include Todoist::Util  
         
         # Add a new task to a project. Note, that this is provided as a
@@ -30,7 +30,7 @@ module Todoist
           end
 
           params.merge(optional_params)
-          result = NetworkHelper.getResponse(Config::TODOIST_ITEMS_ADD_COMMAND, params)
+          result = @api_helper.get_response(Config::TODOIST_ITEMS_ADD_COMMAND, params)
           item = ParseHelper.make_object(result)
           return item
         end
@@ -43,7 +43,7 @@ module Todoist
         def get_item(item, all_data = true)
           params = {item_id: item.id, all_data: all_data}
           
-          result = NetworkHelper.getResponse(Config::TODOIST_ITEMS_GET_COMMAND, params)
+          result = @api_helper.get_response(Config::TODOIST_ITEMS_GET_COMMAND, params)
           item = ParseHelper.make_object(result["item"])
           project = ParseHelper.make_object(result["project"])
           notes = result["notes"] ? ParseHelper.make_objects_as_hash(result["notes"]) : nil

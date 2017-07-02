@@ -2,30 +2,30 @@
 
 module Todoist
   module Sync
-    class Filters
+    class Filters < Todoist::Service
         include Todoist::Util  
 
         # Return a Hash of filters where key is the id of a filter and value is a filter
         def collection
-          return ApiHelper.collection("filters")
+          return @api_helper.collection("filters")
         end
 
         # Add a filter with a given hash of attributes and returns the filter id.  
         # Please note that item_id is required as is a date as specific in the
         # documentation.  This method can be tricky to all.
         def add(args)
-          return ApiHelper.add(args, "filter_add")
+          return @api_helper.add(args, "filter_add")
         end
 
         # Update a filter given a hash of attributes
         def update(args)
-          return ApiHelper.command(args, "filter_update")
+          return @api_helper.command(args, "filter_update")
         end
 
         # Delete filter given an array of filters
         def delete(filter)
           args = {id: filter.id}
-          return ApiHelper.command(args, "filter_delete")
+          return @api_helper.command(args, "filter_delete")
         end
   
         # Update orders for an array of filters
@@ -35,7 +35,7 @@ module Todoist
             args[filter.id] = filter.item_order
           end
           args = {id_order_mapping: args.to_json}
-          return ApiHelper.command(args, "filter_update_orders")
+          return @api_helper.command(args, "filter_update_orders")
         end
 
 

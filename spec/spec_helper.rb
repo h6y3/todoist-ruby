@@ -6,14 +6,14 @@ require "todoist"
 require 'yaml'
 require 'securerandom'
 
-def load_and_set_token
+def load_client
   begin
     token = File.open("spec/token", "r").read
   rescue
     puts "Please create a file called token in the spec folder and have the first line be your Todoist token for testing purposes"
     exit  
   end
-  Todoist::Util::Config.token = token
+  Todoist::Client.new(token)
   
 end
 
@@ -66,5 +66,3 @@ module Todoist
   end
 end
 
-# Test initialization methods
-load_and_set_token

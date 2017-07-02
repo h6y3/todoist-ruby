@@ -15,18 +15,21 @@ module Todoist
   module Util
 
     class ApiHelper
-      
-      @@object_cache = {"projects" => Concurrent::Hash.new({}), "labels" => Concurrent::Hash.new({}), 
+      def initialize(client)
+        @client = client
+        @object_cache = {"projects" => Concurrent::Hash.new({}), "labels" => Concurrent::Hash.new({}), 
         "items" => Concurrent::Hash.new({}), "notes" => Concurrent::Hash.new({}),
         "reminders" => Concurrent::Hash.new({}), "filters" => Concurrent::Hash.new({})
-      }
-      @@sync_token_cache = Concurrent::Hash.new({"projects" => "*", "labels" => "*", 
-        "items" => "*", "notes" => "*", "reminders" => "*", "filters" => "*"})
-
-      def self.collection(type)
-        CommandSynchronizer.sync
+        }
+        @sync_token_cache = Concurrent::Hash.new({"projects" => "*", "labels" => "*", 
+          "items" => "*", "notes" => "*", "reminders" => "*", "filters" => "*"})
+        @network_helper = NetworkHelper.new(client)
+      end
+      
+      def collection(type)
+        @network_helper.sync
         
-        response = getSyncResponse({sync_token: sync_token(type), resource_types: "[\"#{type}\"]"})
+        response = @network_helper.get_sync_response({sync_token: sync_token(type), resource_types: "[\"#{type}\"]"})
         response[type].each do |object_data|
            object = OpenStruct.new(object_data)
            objects(type)[object.id] = object
@@ -35,23 +38,23 @@ module Todoist
         return objects(type)
       end
       
-      def self.exec(args, command, temporary_resource_id)
+      def exec(args, command, temporary_resource_id)
         command_uuid = Uuid.command_uuid
         commands = {type: command, temp_id: temporary_resource_id, uuid: command_uuid, args: args}
-        response = getSyncResponse({commands: "[#{commands.to_json}]"})
+        response = @network_helper.get_sync_response({commands: "[#{commands.to_json}]"})
         raise RuntimeError, "Response returned is not ok" unless response["sync_status"][command_uuid] == "ok"
         return response
       end
       
-      def self.command(args, command)
+      def command(args, command)
         temporary_resource_id = Uuid.temporary_resource_id
         command_uuid = Uuid.command_uuid
         command = {type: command, temp_id: temporary_resource_id, uuid: command_uuid, args: args}
-        CommandSynchronizer.queue(command)
+        @network_helper.queue(command)
         return true
       end
 
-      def self.add(args, command)
+      def add(args, command)
         temporary_resource_id = Uuid.temporary_resource_id
         command_uuid = Uuid.command_uuid
         command = {type: command, temp_id: temporary_resource_id, uuid: command_uuid, args: args}
@@ -60,28 +63,38 @@ module Todoist
             object.id = temp_id_mappings[temporary_resource_id] if temp_id_mappings[temporary_resource_id]
         end
         
-        CommandSynchronizer.queue(command, temp_id_callback)
+        @network_helper.queue(command, temp_id_callback)
         return object
       end
 
-      def self.getSyncResponse(params)
-        NetworkHelper.getResponse(Config::TODOIST_SYNC_COMMAND, params)
+      def get_response(command, params)
+        @network_helper.get_response(command, params)
+      end
+
+      def get_multipart_response(command, params)
+        @network_helper.get_multipart_response(command, params)
+      end
+
+      def multipart_file(file) 
+        @network_helper.multipart_file(file)
+      end
+
+      def sync
+        @network_helper.sync  
       end
 
       protected
-
-
       
-      def self.objects(type)
-        @@object_cache[type]
+      def objects(type)
+        @object_cache[type]
       end
 
-      def self.sync_token(type)
-        @@sync_token_cache[type]
+      def sync_token(type)
+        @sync_token_cache[type]
       end
 
-      def self.set_sync_token(type, value)
-        @@sync_token_cache[type] = value
+      def set_sync_token(type, value)
+        @sync_token_cache[type] = value
       end
 
     end

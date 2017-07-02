@@ -14,17 +14,17 @@ describe Todoist::Misc::Uploads do
   end  
 
   before do
-    @uploads_manager = Todoist::Misc::Uploads.new
+    @client = load_client  
   end
   
   it "is able to upload a file, find it, then delete it" do
     VCR.use_cassette("uploads_is_able_to_upload_a_file_find_it_then_delete_it") do
       file = File.open("spec/template_sample.csv","r")
-      added_file = @uploads_manager.add(file)
+      added_file = @client.misc_uploads.add(file)
       expect(added_file["file_name"]).to be_truthy
-      result = @uploads_manager.get()
+      result = @client.misc_uploads.get()
       expect(result).to be_truthy
-      @uploads_manager.delete(added_file["file_url"])
+      @client.misc_uploads.delete(added_file["file_url"])
     end
   end
 

@@ -14,12 +14,12 @@ describe Todoist::Misc::Activity do
   end  
 
   before do
-    @misc_activity_manager = Todoist::Misc::Activity.new
+    @client = load_client  
   end
   
   it "is able to get activity" do
     VCR.use_cassette("misc_activity_is_able_to_get_activity") do
-      result = @misc_activity_manager.get
+      result = @client.misc_activity.get
       expect(result).to be_truthy
     end
   end

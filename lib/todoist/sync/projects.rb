@@ -2,43 +2,43 @@ module Todoist
   module Sync
     
 
-    class Projects
+    class Projects < Todoist::Service
       include Todoist::Util  
 
       # Return a Hash of projects where key is the id of a project and value is a project
       def collection
-        return ApiHelper.collection("projects")
+        return @api_helper.collection("projects")
       end
 
       # Add a project with a given hash of attributes and returns the project id
       def add(args)
-        return ApiHelper.add(args, "project_add")
+        return @api_helper.add(args, "project_add")
       end
 
       # Delete projects given an array of projects
       def delete(projects)
         project_ids = projects.collect { |project| project.id }   
         args = {ids: project_ids.to_json}
-        return ApiHelper.command(args, "project_delete")
+        return @api_helper.command(args, "project_delete")
       end
 
       # Archive projects given an array of projects
       def archive(projects)
         project_ids = projects.collect { |project| project.id }   
         args = {ids: project_ids.to_json}
-        return ApiHelper.command(args, "project_archive")
+        return @api_helper.command(args, "project_archive")
       end
 
       # Unarchive projects given an array of projects
       def unarchive(projects)
         project_ids = projects.collect { |project| project.id }   
         args = {ids: project_ids.to_json}
-        return ApiHelper.command(args, "project_unarchive")
+        return @api_helper.command(args, "project_unarchive")
       end
 
       # Update project given a hash of attributes
       def update(args)
-        return ApiHelper.command(args, "project_update")
+        return @api_helper.command(args, "project_update")
       end
 
       # Update orders and indents for an array of projects
@@ -48,7 +48,7 @@ module Todoist
           tuples[project.id] = [project.item_order, project.indent]
         end
         args = {ids_to_orders_indents: tuples.to_json}
-        return ApiHelper.command(args, "project_update_orders_indents")
+        return @api_helper.command(args, "project_update_orders_indents")
       end
 
     end

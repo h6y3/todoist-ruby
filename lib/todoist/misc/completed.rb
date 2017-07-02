@@ -1,12 +1,12 @@
 module Todoist
   module Misc
-    class Completed
+    class Completed < Todoist::Service
         include Todoist::Util  
         
         # Get productivity stats.  Returns a hash of statistics as documented
         # at https://developer.todoist.com/#get-productivity-stats
         def get_productivity_stats()
-          NetworkHelper.getResponse(Config::TODOIST_COMPLETED_GET_STATS_COMMAND)
+          @api_helper.get_response(Config::TODOIST_COMPLETED_GET_STATS_COMMAND)
         end
         
         # Retrieves all completed items as documented at 
@@ -17,13 +17,13 @@ module Todoist
         
         def get_all_completed_items(params = {})
           if params["until"]
-            params["until"] = ParseHelper.formatTime(params["until"])
+            params["until"] = ParseHelper.format_time(params["until"])
           end
           if params["since"]
-            params["since"] = ParseHelper.formatTime(params["since"])
+            params["since"] = ParseHelper.format_time(params["since"])
           end
           
-          result = NetworkHelper.getResponse(Config::TODOIST_COMPLETED_GET_ALL_COMMAND, params)
+          result = @api_helper.get_response(Config::TODOIST_COMPLETED_GET_ALL_COMMAND, params)
           items = ParseHelper.make_objects_as_array(result["items"])
           projects = ParseHelper.make_objects_as_array(result["projects"])
           return {"items" => items, "projects" => projects}

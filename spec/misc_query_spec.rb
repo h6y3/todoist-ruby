@@ -14,14 +14,14 @@ describe Todoist::Misc::Query do
   end  
 
   before do
-    @query_manager = Todoist::Misc::Query.new
+    @client = load_client  
   end
   
   it "is able to query" do
     VCR.use_cassette("misc_query_is_able_to_query") do
-      result = @query_manager.queries(["p1", "tomorrow"])
+      result = @client.misc_query.queries(["p1", "tomorrow"])
       expect(result["p1"]).to be_truthy
-      result = @query_manager.query("tomorrow")
+      result = @client.misc_query.query("tomorrow")
       expect(result).to be_truthy
     end
   end

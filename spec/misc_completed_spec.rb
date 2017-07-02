@@ -14,12 +14,13 @@ describe Todoist::Misc::Completed do
   end  
 
   before do
-    @misc_completed_manager = Todoist::Misc::Completed.new
+    @client = load_client  
+    @client.misc_completed = Todoist::Misc::Completed.new
   end
   
   it "is able to get productivity stats" do
     VCR.use_cassette("misc_completed_is_able_to_get_productivity_stats") do
-      result = @misc_completed_manager.get_productivity_stats
+      result = @client.misc_completed.get_productivity_stats
       expect(result).to be_truthy
     end
   end
@@ -27,7 +28,7 @@ describe Todoist::Misc::Completed do
   it "is able to get all completed items" do
     VCR.use_cassette("misc_completed_is_able_to_get_all_completed_items") do
       since = Date.today - 7
-      result = @misc_completed_manager.get_all_completed_items({"since" => since})
+      result = @client.misc_completed.get_all_completed_items({"since" => since})
       expect(result["items"]).to be_truthy
     end
   end

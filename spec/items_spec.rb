@@ -13,40 +13,40 @@ describe Todoist::Sync::Items do
   end
 
   before do
-    @item_manager = Todoist::Sync::Items.new
+    @client = load_client  
   end
 
   it "is able to get items" do
     VCR.use_cassette("items_is_able_to_get_items") do         
-      items = @item_manager.collection
+      items = @client.sync_items.collection
       expect(items).to be_truthy
     end
   end
 
   it "is able to update a item" do  
     VCR.use_cassette("items_is_able_to_update_a_item") do   
-      update_item = @item_manager.add({content: "Item3"})      
+      update_item = @client.sync_items.add({content: "Item3"})      
       expect(update_item).to be_truthy
       update_item.priority = 2
-      result = @item_manager.update({id: update_item.id, priority: update_item.priority})
+      result = @client.sync_items.update({id: update_item.id, priority: update_item.priority})
       expect(result).to be_truthy
-      items_list =  @item_manager.collection
+      items_list =  @client.sync_items.collection
       queried_object = items_list[update_item.id]
       expect(queried_object.priority).to eq(2)
-      @item_manager.delete([update_item])
+      @client.sync_items.delete([update_item])
       Todoist::Util::CommandSynchronizer.sync      
     end
   end
 
   it "is able to update multiple orders and indents" do
     VCR.use_cassette("items_is_able_to_update_multiple_orders_and_indents") do       
-      item = @item_manager.add({content: "Item1"})
+      item = @client.sync_items.add({content: "Item1"})
       expect(item).to be_truthy
-      item2 = @item_manager.add({content: "Item2"})
+      item2 = @client.sync_items.add({content: "Item2"})
   
       # Restore the items fully
   
-      item_collection = @item_manager.collection
+      item_collection = @client.sync_items.collection
   
       item = item_collection[item.id]
       item2 = item_collection[item2.id]
@@ -63,8 +63,8 @@ describe Todoist::Sync::Items do
       # Indent @item
       item.indent = 2
   
-      @item_manager.update_multiple_orders_and_indents([item, item2])
-      item_collection = @item_manager.collection
+      @client.sync_items.update_multiple_orders_and_indents([item, item2])
+      item_collection = @client.sync_items.collection
   
       # Check to make sure newly retrieved object values match old ones
   
@@ -74,7 +74,7 @@ describe Todoist::Sync::Items do
   
       # Clean up extra item
   
-      @item_manager.delete([item, item2])
+      @client.sync_items.delete([item, item2])
       Todoist::Util::CommandSynchronizer.sync
     end
   
@@ -84,106 +84,106 @@ describe Todoist::Sync::Items do
     VCR.use_cassette("items_is_able_to_move") do
       project_manager = Todoist::Sync::Projects.new
       project = project_manager.add({name: "Item_Move_Test_To"})
-      item = @item_manager.add({content: "ItemMove"})
-      items_list =  @item_manager.collection
+      item = @client.sync_items.add({content: "ItemMove"})
+      items_list =  @client.sync_items.collection
       queried_object = items_list[item.id]
-      @item_manager.move(queried_object, project)
-      items_list =  @item_manager.collection
+      @client.sync_items.move(queried_object, project)
+      items_list =  @client.sync_items.collection
       queried_object = items_list[item.id]
       expect(queried_object.project_id).to eq(project.id)
 
       project_manager.delete([project])
-      @item_manager.delete([item])
+      @client.sync_items.delete([item])
       Todoist::Util::CommandSynchronizer.sync
     end
   end
 
   it "is able to complete" do
     VCR.use_cassette("items_is_able_to_complete") do
-      item = @item_manager.add({content: "ItemComplete"})
-      items_list =  @item_manager.collection
+      item = @client.sync_items.add({content: "ItemComplete"})
+      items_list =  @client.sync_items.collection
 
       queried_object = items_list[item.id]
-      @item_manager.complete([queried_object])
-      items_list =  @item_manager.collection
+      @client.sync_items.complete([queried_object])
+      items_list =  @client.sync_items.collection
       queried_object = items_list[item.id]
       expect(queried_object.checked).to eq(1)
-      @item_manager.delete([queried_object])
+      @client.sync_items.delete([queried_object])
       Todoist::Util::CommandSynchronizer.sync
     end
   end
   
   it "is able to uncomplete" do
     VCR.use_cassette("items_is_able_to_uncomplete") do
-      item = @item_manager.add({content: "ItemComplete"})
-      items_list =  @item_manager.collection
+      item = @client.sync_items.add({content: "ItemComplete"})
+      items_list =  @client.sync_items.collection
       
       # Complete the item
       queried_object = items_list[item.id]
-      @item_manager.complete([queried_object])
-      items_list =  @item_manager.collection
+      @client.sync_items.complete([queried_object])
+      items_list =  @client.sync_items.collection
       queried_object = items_list[item.id]
       expect(queried_object.checked).to eq(1)
       
       # Uncomplete the item
-      @item_manager.uncomplete([queried_object])
-      items_list =  @item_manager.collection
+      @client.sync_items.uncomplete([queried_object])
+      items_list =  @client.sync_items.collection
       queried_object = items_list[item.id]
       expect(queried_object.checked).to eq(0)
       
-      @item_manager.delete([queried_object])
+      @client.sync_items.delete([queried_object])
       Todoist::Util::CommandSynchronizer.sync
     end
   end
   
   it "is able to complete a recurring task" do
     VCR.use_cassette("items_is_able_to_complete_a_recurring_task") do
-      item = @item_manager.add({content: "ItemCompleteRecurring", date_string: "every day @10" })
-      items_list =  @item_manager.collection
+      item = @client.sync_items.add({content: "ItemCompleteRecurring", date_string: "every day @10" })
+      items_list =  @client.sync_items.collection
       queried_object = items_list[item.id]
       
       due_date_original = queried_object.due_date_utc
       
-      @item_manager.complete_recurring(queried_object)
-      items_list =  @item_manager.collection
+      @client.sync_items.complete_recurring(queried_object)
+      items_list =  @client.sync_items.collection
       queried_object = items_list[item.id]
       
       due_date_new = queried_object.due_date_utc
       
       expect(due_date_new).not_to eq(due_date_original)
       
-      @item_manager.delete([queried_object])
+      @client.sync_items.delete([queried_object])
       Todoist::Util::CommandSynchronizer.sync
     end
   end
   
   it "is able to close a task" do
     VCR.use_cassette("items_is_able_to_close_a_task") do
-      item = @item_manager.add({content: "ItemClose"})
-      items_list =  @item_manager.collection
+      item = @client.sync_items.add({content: "ItemClose"})
+      items_list =  @client.sync_items.collection
 
       queried_object = items_list[item.id]
-      @item_manager.close(queried_object)
-      items_list =  @item_manager.collection
+      @client.sync_items.close(queried_object)
+      items_list =  @client.sync_items.collection
       queried_object = items_list[item.id]
       expect(queried_object.checked).to eq(1)
-      @item_manager.delete([queried_object])
+      @client.sync_items.delete([queried_object])
       Todoist::Util::CommandSynchronizer.sync
     end
   end
 
   it "is able to update day orders" do
     VCR.use_cassette("items_is_able_to_update_day_orders") do
-      item = @item_manager.add({content: "ItemDayOrder"})
-      items_list =  @item_manager.collection
+      item = @client.sync_items.add({content: "ItemDayOrder"})
+      items_list =  @client.sync_items.collection
 
       queried_object = items_list[item.id]
       queried_object.day_order = 1000
-      @item_manager.update_day_orders([queried_object])
-      items_list =  @item_manager.collection
+      @client.sync_items.update_day_orders([queried_object])
+      items_list =  @client.sync_items.collection
       queried_object = items_list[item.id]
       expect(queried_object.day_order).to eq(1000)
-      @item_manager.delete([queried_object])
+      @client.sync_items.delete([queried_object])
       Todoist::Util::CommandSynchronizer.sync
     end
   end
