@@ -23,7 +23,7 @@ describe Todoist::Misc::Items do
       expect(item).to be_truthy
       expect(item.due_date_utc).to be_truthy
       @client.sync_items.delete([item])
-      Todoist::Util::CommandSynchronizer.sync
+      @client.sync
     end
   end
   

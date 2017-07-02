@@ -102,14 +102,6 @@ module Todoist
           mime_type = MimeMagic.by_path(filename).type
           return UploadIO.new(file, mime_type, filename)
       end
-
-      def initialize(client)
-        @command_cache = Concurrent::Array.new([])
-        @command_mutex = Mutex.new
-        @temp_id_callback_cache = Concurrent::Array.new([])
-        @client = client
-        @network_helper = NetworkHelper.new(client)
-      end
         
       def queue(command, callback = nil) 
         @command_mutex.synchronize do

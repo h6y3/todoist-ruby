@@ -4,7 +4,7 @@ This is an unofficial client library that interfaces with the [Todoist API](http
 
 ## What's implemented
 
-### sync API
+### Sync API
 
 The "sync" API is almost fully implemented with the exception of collaboration features.  
 
@@ -67,62 +67,55 @@ require 'todoist'
 
 ### Logging in and setting tokens
 
-Before you make any API calls, you **must** login.  The library supports two methods:
+Before you make any API calls, you **must** create a client using one of two methods.  The library supports two methods:
 
 #### Email and password
 
 ```ruby
-user_manager = Todoist::Misc::User.new
-user = user_manager.login("hello@example.com", "123")
-user.email
- => "hello@example.com" 
+@client = Todoist::Client.create_client_by_login("hello@example.com", "123")
 ```
-
-Upon calling the login method, an object is returned implemented through an [OpenStruct](http://ruby-doc.org/stdlib-2.0.0/libdoc/ostruct/rdoc/OpenStruct.html) that represents a variety of fields that may be useful to you.
 
 #### Token
 
-New tokens can be generated at the [Todoist App Management portal](https://developer.todoist.com/appconsole.html).  Once a token has been acquired simply set it as so:
+New tokens can be generated at the [Todoist App Management portal](https://developer.todoist.com/appconsole.html).  Once a token has been acquired you can create a client by calling:
 
 ```ruby
-Todoist::Util::Config.token = "my token"
+@client = Todoist::Client.create_client_by_token("my token")
 ```
 
-### Using the sync API
+### Using the API
 
-The Todoist sync API enables you to mimic how the actual Todoist client retrieves information.  Among other nuances, the sync API minimizes network traffic by batching a series of calls together.  It supports dependencies between as-yet-created objects through temporary IDs.
+The Todoist API enables you to mimic how the actual Todoist client retrieves information.  Among other nuances, the "sync" API minimizes network traffic by batching a series of calls together.  It supports dependencies between as-yet-created objects through temporary IDs.  In addition to the sync API, Todoist also has several other methods that are lighterweight.  For many light use cases, the lightweight methods will suffice but for more complex cases you will likely need to use both approaches.
 
-Because of the way the API is designed, it is likely your application will need to use some combination of the sync api along with the other, lighterweight methods also provided.
-
-Managers provides in the sync API all exist in the module ```Todoist::Sync```.
+All APIs can be accessed through the client.  In general, the naming convention to access the service is ```[api_type]_[api]```.
 
 There are two ways to force a sync in the API:
 
-1.  ```manager_object.collection```:  Calling collection forces the library to sync with the Todoist server to retrieve the latest.  This method stores an internal in-memory copy of the result for incremental syncs but the caller should store a copy of the result in its own variable for query purposes.
-2.  ```Todoist::Util::CommandSynchronizer.sync```: Calling this method forcibly syncs the side-effects that have been queued.
+1.  ```collection```:  Calling collection forces the library to sync with the Todoist server to retrieve the latest.  This method stores an internal in-memory copy of the result for incremental syncs but the caller should store a copy of the result in its own variable for query purposes.  The following call syncs all items and returns a collection of the items:  ```@client.sync_items.collection```.
+2.  ```sync```: Calling the sync method on the client object forces a sync which can be called like ```@client.sync```
 
-When objects are called using the ```manager.object.add``` methods, a shallow object is created with a temporary id accessible by sending an ```id``` message.  Once any of the above synchronization methods are called above, the ids are updated via a callback with their actual ids so they can be used in subsequent calls.
+When objects are called using the ```add``` methods, a shallow object is created with a temporary id accessible by sending an ```id``` message.  Once any of the above synchronization methods are called above, the ids are updated via a callback with their actual ids so they can be used in subsequent calls.
 
 #### Creating an item 
 
 ```ruby 
-update_item = @item_manager.add({content: "Item3"})     
+update_item = @client.sync_items.add({content: "Item3"})     
 ## At this time update_item has a temporary id
 
 update_item.priority = 2
-result = @item_manager.update(update_item)
+result = @client.sync_items.update(update_item)
 # Up until this point update_item has not been created yet
 
-items_list =  @item_manager.collection
+items_list =  @client.sync_items.collection
 # Update item is created and a query is issued to sync up the existing items.  The actual id of the newly created item is updated and so now update_item should have the actual id.
 
 queried_object = items_list[update_item.id]
 # update_item remains a shallow value object.  To fully inflate the object, you will need to retrieve the item from the list.  At this point, queried_object has a fully inflated copy of the object
 
-@item_manager.delete([update_item])
+@client.sync_items.delete([update_item])
 # As is the case with other side-effects, issuing the call does not send the request immediately.  
 
-Todoist::Util::CommandSynchronizer.sync     
+@client.sync     
 # Manually calling sync deletes the item 
 ```
 
@@ -135,8 +128,7 @@ The rest of the APIs are available in the ```Todoist::Misc``` module.  For light
 #### Creating an item using the "quick" API
 
 ```ruby
-@misc_quick_manager = Todoist::Misc::Quick.new
-item = @misc_quick_manager.add_item("Test quick add content today")
+item = @client.misc_quick.add_item("Test quick add content today")
 # Unlike the sync API the item is already created after this method call and fully inflated
 ```
 ### Rate limiting
@@ -192,6 +184,7 @@ Once tests pass cleanly, subsquent runs that do not change the network requests 
 
 ## Version History
 
+* 0.2.1: Major refactoring of library to support implementations that require multi-user support in a concurrent environment (e.g. Rails app).  The previous implementation relied heavily on class singletons.  Internally, the code has been cleaned up significantly.  Due to the scale of changes, 0.2.1 is not compatible 0.1.x versions of the library.
 * 0.1.3: Changed ```Todoist::Sync``` managers so that the update method uses a hash instead of an OpenStruct.  The OpenStruct creates errors when an OpenStruct passed from a previous call is used.  The hash helps the caller make fewer mistakes.
 * 0.1.2: Renamed method ```Todoist::Util::ParseHelper.make_objects_as_array``` to ```Todoist::Util::ParseHelper.make_objects_as_hash``` to reflect the fact that it was actually returning hashes.  Added the aforementioned deleted method to return arrays and finally altered ```Todoist::Misc::Completed``` to return objects as arrays instead of hashes due to the fact that recurring completed items were being de-duped unintentionally and data was being lost as a result.
 * 0.1.1: Initial release.

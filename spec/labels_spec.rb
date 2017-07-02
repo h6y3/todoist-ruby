@@ -20,7 +20,7 @@ describe Todoist::Sync::Labels do
   after do
     VCR.use_cassette("labels_after") do
       @client.sync_labels.delete(@label)
-      Todoist::Util::CommandSynchronizer.sync
+      @client.sync
     end
   end  
 
@@ -43,7 +43,7 @@ describe Todoist::Sync::Labels do
       queried_object = labels_list[update_label.id]
       expect(queried_object.color).to eq(2)
       @client.sync_labels.delete(update_label)
-      Todoist::Util::CommandSynchronizer.sync  
+      @client.sync  
       
     end
   end

@@ -21,7 +21,7 @@ describe Todoist::Sync::Projects do
   after do
     VCR.use_cassette("projects_after") do    
       @client.sync_projects.delete([@project])
-      Todoist::Util::CommandSynchronizer.sync
+      @client.sync
     end
   end  
 
@@ -51,7 +51,7 @@ describe Todoist::Sync::Projects do
       queried_object = @client.sync_projects.collection[update_project.id]
       expect(queried_object.indent).to eq(2)
       @client.sync_projects.delete([update_project])
-      Todoist::Util::CommandSynchronizer.sync      
+      @client.sync      
     end
   end
 

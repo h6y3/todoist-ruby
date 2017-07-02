@@ -34,7 +34,7 @@ describe Todoist::Sync::Items do
       queried_object = items_list[update_item.id]
       expect(queried_object.priority).to eq(2)
       @client.sync_items.delete([update_item])
-      Todoist::Util::CommandSynchronizer.sync      
+      @client.sync      
     end
   end
 
@@ -75,7 +75,7 @@ describe Todoist::Sync::Items do
       # Clean up extra item
   
       @client.sync_items.delete([item, item2])
-      Todoist::Util::CommandSynchronizer.sync
+      @client.sync
     end
   
    end
@@ -94,7 +94,7 @@ describe Todoist::Sync::Items do
 
       project_manager.delete([project])
       @client.sync_items.delete([item])
-      Todoist::Util::CommandSynchronizer.sync
+      @client.sync
     end
   end
 
@@ -109,7 +109,7 @@ describe Todoist::Sync::Items do
       queried_object = items_list[item.id]
       expect(queried_object.checked).to eq(1)
       @client.sync_items.delete([queried_object])
-      Todoist::Util::CommandSynchronizer.sync
+      @client.sync
     end
   end
   
@@ -132,7 +132,7 @@ describe Todoist::Sync::Items do
       expect(queried_object.checked).to eq(0)
       
       @client.sync_items.delete([queried_object])
-      Todoist::Util::CommandSynchronizer.sync
+      @client.sync
     end
   end
   
@@ -153,7 +153,7 @@ describe Todoist::Sync::Items do
       expect(due_date_new).not_to eq(due_date_original)
       
       @client.sync_items.delete([queried_object])
-      Todoist::Util::CommandSynchronizer.sync
+      @client.sync
     end
   end
   
@@ -168,7 +168,7 @@ describe Todoist::Sync::Items do
       queried_object = items_list[item.id]
       expect(queried_object.checked).to eq(1)
       @client.sync_items.delete([queried_object])
-      Todoist::Util::CommandSynchronizer.sync
+      @client.sync
     end
   end
 
@@ -184,7 +184,7 @@ describe Todoist::Sync::Items do
       queried_object = items_list[item.id]
       expect(queried_object.day_order).to eq(1000)
       @client.sync_items.delete([queried_object])
-      Todoist::Util::CommandSynchronizer.sync
+      @client.sync
     end
   end
 

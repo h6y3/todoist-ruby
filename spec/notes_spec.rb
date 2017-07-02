@@ -40,7 +40,7 @@ describe Todoist::Sync::Notes do
       
       @client.sync_items.delete([note_item])
       @client.sync_notes.delete(add_note)
-      Todoist::Util::CommandSynchronizer.sync  
+      @client.sync  
       
     end
   end

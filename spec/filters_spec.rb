@@ -38,7 +38,7 @@ describe Todoist::Sync::Filters do
       expect(queried_object.name).to eq("FilterTestUpdate")
       
       @client.sync_filters.delete(add_filter)
-      Todoist::Util::CommandSynchronizer.sync  
+      @client.sync  
       
     end
   end

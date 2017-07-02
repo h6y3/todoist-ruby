@@ -1,8 +1,19 @@
 module Todoist
     class Client    
 
-      def initialize(token)
-        @token = token
+      def self.create_client_by_token(token)
+        client = Client.new
+        client.token = token 
+        client
+      end
+
+      def self.create_client_by_login(email, password)
+        client = Client.new
+        network_helper = NetworkHelper.new(client)
+        result = @api_helper.get_response(Config::TODOIST_USER_LOGIN_COMMAND, {email: email, password: password}, false)
+        user = ParseHelper.make_object(result)
+        client.token = user.token
+        client
       end
 
       def token=(token)
@@ -91,6 +102,12 @@ module Todoist
       def sync_reminders
         @sync_reminders = Todoist::Sync::Reminders.new(self) unless @sync_reminders
         @sync_reminders
+      end
+
+      protected
+
+      def initialize
+        
       end
 
     end

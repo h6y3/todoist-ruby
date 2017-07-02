@@ -23,7 +23,7 @@ describe Todoist::Misc::Items do
       expect(item).to be_truthy
       
       item_data = @client.misc_items.get_item(item)
-      Todoist::Util::CommandSynchronizer.sync
+      @client.sync
     end
   end
 

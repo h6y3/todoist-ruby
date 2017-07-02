@@ -29,7 +29,7 @@ describe Todoist::Misc::Projects do
       # Create an item and a project
       item = @client.sync_items.add({content: "Item3"})   
       project = @client.sync_projects.add({name: "Project1"})
-      Todoist::Util::CommandSynchronizer.sync
+      @client.sync
       
       # Add a note to the project
       note = @client.sync_notes.add({content: "NoteForMiscProjectTest", project_id: project.id})
@@ -42,7 +42,7 @@ describe Todoist::Misc::Projects do
       @client.sync_items.move(item, project)
       
       
-      Todoist::Util::CommandSynchronizer.sync
+      @client.sync
       # Get project info
       result = @client.misc_projects.get_project_info(project)
       
@@ -59,7 +59,7 @@ describe Todoist::Misc::Projects do
       @client.sync_items.delete([item])
       @client.sync_projects.delete([project])
       @client.sync_notes.delete(note)
-      Todoist::Util::CommandSynchronizer.sync
+      @client.sync
     end
   end
 

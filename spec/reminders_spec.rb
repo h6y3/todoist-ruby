@@ -44,7 +44,7 @@ describe Todoist::Sync::Reminders do
       
       @client.sync_items.delete([reminder_item])
       @client.sync_reminders.delete(add_reminder)
-      Todoist::Util::CommandSynchronizer.sync  
+      @client.sync  
       
     end
   end
