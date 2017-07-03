@@ -1,6 +1,6 @@
 require "net/http"
 require "json"
-require "todoist/util/config"
+require "todoist/config"
 require 'net/http/post/multipart'
 require 'mimemagic'
 

@@ -1,10 +1,9 @@
 require "net/http"
 require "json"
-require "todoist/util/config"
+require "todoist/config"
 require "todoist/util/network_helper"
 require "todoist/util/parse_helper"
 require "todoist/util/uuid"
-require "todoist/util/command_synchronizer"
 require "ostruct"
 require 'concurrent'
 
