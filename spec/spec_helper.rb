@@ -13,7 +13,7 @@ def load_client
     puts "Please create a file called token in the spec folder and have the first line be your Todoist token for testing purposes"
     exit  
   end
-  Todoist::Client.new(token)
+  Todoist::Client.create_client_by_token(token)
   
 end
 

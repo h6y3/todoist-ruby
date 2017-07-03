@@ -8,13 +8,15 @@ module Todoist
   module Util
     class NetworkHelper
 
-      @last_request_time = 0.0
+      
 
       def initialize(client)
         @client = client
         @command_cache = Concurrent::Array.new([])
         @command_mutex = Mutex.new
         @temp_id_callback_cache = Concurrent::Array.new([])
+        @last_request_time = 0.0
+        
       end
       
       def configure_http(command)
@@ -51,7 +53,7 @@ module Todoist
         token = token ? {token: @client.token} : {}
         http = configure_http(command)
         request = configure_request(command, token.merge(params))
-        retry_after_secs = Todoist::Util::Config.retry_time
+        retry_after_secs = Todoist::Config.retry_time
         # Hack to fix encoding issues with Net:HTTP for login case
         request.body = request.body.gsub '%40', '@' unless token
         while true
@@ -74,7 +76,7 @@ module Todoist
           when 429
             puts("Encountered 429 - retry after #{retry_after_secs}")
             sleep(retry_after_secs)
-            retry_after_secs *= Todoist::Util::Config.retry_time
+            retry_after_secs *= Todoist::Config.retry_time
           when 500
             raise StandardError, "HTTP 500 Error - The request failed due to a server error."
           when 503
@@ -87,8 +89,8 @@ module Todoist
       def throttle_request(http, request)
         time_since_last_request = Time.now.to_f - @last_request_time
         
-        if (time_since_last_request < Todoist::Util::Config.delay_between_requests)
-          wait = Todoist::Util::Config.delay_between_requests - time_since_last_request
+        if (time_since_last_request < Todoist::Config.delay_between_requests)
+          wait = Todoist::Config.delay_between_requests - time_since_last_request
           puts("Throttling request by: #{wait}")
           sleep(wait)
         end

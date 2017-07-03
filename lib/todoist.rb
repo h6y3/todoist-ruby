@@ -3,6 +3,7 @@ require "todoist/config"
 require "todoist/util/api_helper"
 require "todoist/util/network_helper"
 require "todoist/service"
+require "todoist/client"
 
 require "todoist/sync/items"
 require "todoist/sync/labels"
