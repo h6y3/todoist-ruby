@@ -15,7 +15,6 @@ describe Todoist::Misc::Completed do
 
   before do
     @client = load_client  
-    @client.misc_completed = Todoist::Misc::Completed.new
   end
   
   it "is able to get productivity stats" do

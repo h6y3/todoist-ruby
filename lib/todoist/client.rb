@@ -9,7 +9,6 @@ module Todoist
 
       def self.create_client_by_login(email, password)
         client = Client.new
-        network_helper = NetworkHelper.new(client)
         result = @api_helper.get_response(Config::TODOIST_USER_LOGIN_COMMAND, {email: email, password: password}, false)
         user = ParseHelper.make_object(result)
         client.token = user.token
@@ -34,7 +33,7 @@ module Todoist
         @misc_backups
       end
 
-      def misc_items
+      def misc_completed
         @misc_completed = Todoist::Misc::Completed.new(self) unless @misc_completed
         @misc_completed
       end
@@ -67,11 +66,6 @@ module Todoist
       def misc_uploads
         @misc_uploads = Todoist::Misc::Uploads.new(self) unless @misc_uploads
         @misc_uploads
-      end
-
-      def misc_user
-        @misc_user = Todoist::Misc::User.new(self) unless @misc_user
-        @misc_user
       end
 
       def sync_filters

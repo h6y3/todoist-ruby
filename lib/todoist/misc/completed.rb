@@ -6,7 +6,7 @@ module Todoist
         # Get productivity stats.  Returns a hash of statistics as documented
         # at https://developer.todoist.com/#get-productivity-stats
         def get_productivity_stats()
-          @api_helper.get_response(Config::TODOIST_COMPLETED_GET_STATS_COMMAND)
+          @api_helper.get_response(Config::TODOIST_COMPLETED_GET_STATS_COMMAND, {})
         end
         
         # Retrieves all completed items as documented at 
