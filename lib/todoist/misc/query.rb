@@ -12,7 +12,7 @@ module Todoist
         # query results.  Query results have three key elements:  query, type, 
         # and data.  Data is where the items are stored.
         def queries(queries)
-          result = @api_helper.get_response(Config::TODOIST_QUERY_COMMAND, 
+          result = @client.api_helper.get_response(Config::TODOIST_QUERY_COMMAND, 
             queries: queries.to_json)
           return ParseHelper.make_objects_as_hash(result, "query")
         end

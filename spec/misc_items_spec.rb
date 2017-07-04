@@ -23,6 +23,7 @@ describe Todoist::Misc::Items do
       expect(item).to be_truthy
       
       item_data = @client.misc_items.get_item(item)
+      @client.sync_items.delete([item])
       @client.sync
     end
   end

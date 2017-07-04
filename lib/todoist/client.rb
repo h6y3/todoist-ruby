@@ -7,9 +7,10 @@ module Todoist
         client
       end
 
+      # TODO:  Need to write a unit test for this
       def self.create_client_by_login(email, password)
         client = Client.new
-        result = @api_helper.get_response(Config::TODOIST_USER_LOGIN_COMMAND, {email: email, password: password}, false)
+        result = api_helper.get_response(Config::TODOIST_USER_LOGIN_COMMAND, {email: email, password: password}, false)
         user = ParseHelper.make_object(result)
         client.token = user.token
         client
@@ -21,6 +22,10 @@ module Todoist
       
       def token
         @token
+      end
+      
+      def sync
+        @api_helper.sync
       end
 
       def misc_activity
@@ -98,11 +103,17 @@ module Todoist
         @sync_reminders
       end
 
+      def api_helper
+        @api_helper
+      end
+
       protected
 
       def initialize
-        
+        @api_helper = Todoist::Util::ApiHelper.new(self)
       end
+      
+
 
     end
 end

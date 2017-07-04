@@ -49,6 +49,7 @@ module Todoist
         temporary_resource_id = Uuid.temporary_resource_id
         command_uuid = Uuid.command_uuid
         command = {type: command, temp_id: temporary_resource_id, uuid: command_uuid, args: args}
+        
         @network_helper.queue(command)
         return true
       end

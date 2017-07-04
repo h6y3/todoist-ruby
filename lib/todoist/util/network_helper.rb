@@ -110,11 +110,12 @@ module Todoist
           @command_cache.push(command)
           @temp_id_callback_cache.push(callback) if callback
         end
+        
       end
       
       def sync
         @command_mutex.synchronize do    
-          response = get_sync_response({commands: @@command_cache.to_json})
+          response = get_sync_response({commands: @command_cache.to_json})
           @command_cache.clear
           # Process callbacks here
           temp_id_mappings = response["temp_id_mapping"]

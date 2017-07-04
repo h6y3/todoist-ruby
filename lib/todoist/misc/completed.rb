@@ -6,7 +6,7 @@ module Todoist
         # Get productivity stats.  Returns a hash of statistics as documented
         # at https://developer.todoist.com/#get-productivity-stats
         def get_productivity_stats()
-          @api_helper.get_response(Config::TODOIST_COMPLETED_GET_STATS_COMMAND, {})
+          @client.api_helper.get_response(Config::TODOIST_COMPLETED_GET_STATS_COMMAND, {})
         end
         
         # Retrieves all completed items as documented at 
@@ -23,7 +23,7 @@ module Todoist
             params["since"] = ParseHelper.format_time(params["since"])
           end
           
-          result = @api_helper.get_response(Config::TODOIST_COMPLETED_GET_ALL_COMMAND, params)
+          result = @client.api_helper.get_response(Config::TODOIST_COMPLETED_GET_ALL_COMMAND, params)
           items = ParseHelper.make_objects_as_array(result["items"])
           projects = ParseHelper.make_objects_as_array(result["projects"])
           return {"items" => items, "projects" => projects}

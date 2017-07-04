@@ -43,7 +43,7 @@ module Todoist
             params.delete("initiator")
           end
             
-          result = @api_helper.get_response(Config::TODOIST_ACTIVITY_GET_COMMAND, params)
+          result = @client.api_helper.get_response(Config::TODOIST_ACTIVITY_GET_COMMAND, params)
           ParseHelper.make_objects_as_hash(result)
         end
     end

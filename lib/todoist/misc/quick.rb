@@ -6,7 +6,7 @@ module Todoist
         # Implementation of the Quick Add Task available in the official 
         # clients.
         def add_item(text)
-          result = @api_helper.get_response(Config::TODOIST_QUICK_ADD_COMMAND, {text: text})
+          result = @client.api_helper.get_response(Config::TODOIST_QUICK_ADD_COMMAND, {text: text})
           return ParseHelper.make_object(result)
         end
 

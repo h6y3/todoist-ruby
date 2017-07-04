@@ -30,7 +30,7 @@ module Todoist
           end
 
           params.merge(optional_params)
-          result = @api_helper.get_response(Config::TODOIST_ITEMS_ADD_COMMAND, params)
+          result = @client.api_helper.get_response(Config::TODOIST_ITEMS_ADD_COMMAND, params)
           item = ParseHelper.make_object(result)
           return item
         end
@@ -43,7 +43,7 @@ module Todoist
         def get_item(item, all_data = true)
           params = {item_id: item.id, all_data: all_data}
           
-          result = @api_helper.get_response(Config::TODOIST_ITEMS_GET_COMMAND, params)
+          result = @client.api_helper.get_response(Config::TODOIST_ITEMS_GET_COMMAND, params)
           item = ParseHelper.make_object(result["item"])
           project = ParseHelper.make_object(result["project"])
           notes = result["notes"] ? ParseHelper.make_objects_as_hash(result["notes"]) : nil
