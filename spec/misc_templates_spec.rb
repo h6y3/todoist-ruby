@@ -18,7 +18,7 @@ describe Todoist::Misc::Templates do
   end
   
   it "is able to import into a project" do
-    VCR.use_cassette("templates_is_able_to_import_into_a_project") do
+    VCR.use_cassette("misc_templates_is_able_to_import_into_a_project") do
       project = @client.sync_projects.add({name: "TemplatesImport"})
       @client.sync_projects.collection
       file = File.open("spec/template_sample.csv","r")
@@ -30,7 +30,7 @@ describe Todoist::Misc::Templates do
   end
 
   it "is able to export as a file" do
-    VCR.use_cassette("templates_is_able_to_export_as_a_file") do
+    VCR.use_cassette("misc_templates_is_able_to_export_as_a_file") do
       project = @client.sync_projects.add({name: "TemplatesExport"})
       @client.sync_projects.collection
       file = @client.misc_templates.export_as_file(project)
@@ -41,12 +41,12 @@ describe Todoist::Misc::Templates do
   end
 
   it "is able to export as a url" do  
-    VCR.use_cassette("templates_is_able_to_export_as_a_url") do    
+    VCR.use_cassette("misc_templates_is_able_to_export_as_a_url") do    
      project = @client.sync_projects.add({name: "TemplatesExport"})
       @client.sync_projects.collection
       result = @client.misc_templates.export_as_url(project)
       expect(result["file_name"]).to be_truthy
-      @projects_manager.delete([project])
+      @client.sync_projects.delete([project])
       @client.sync
     end
   end

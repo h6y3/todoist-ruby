@@ -18,7 +18,7 @@ describe Todoist::Misc::Uploads do
   end
   
   it "is able to upload a file, find it, then delete it" do
-    VCR.use_cassette("uploads_is_able_to_upload_a_file_find_it_then_delete_it") do
+    VCR.use_cassette("misc_uploads_is_able_to_upload_a_file_find_it_then_delete_it") do
       file = File.open("spec/template_sample.csv","r")
       added_file = @client.misc_uploads.add(file)
       expect(added_file["file_name"]).to be_truthy
