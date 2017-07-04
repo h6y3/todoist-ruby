@@ -182,6 +182,55 @@ rake spec:clean["misc_items"]
 
 Once tests pass cleanly, subsquent runs that do not change the network requests run quickly since no network calls are made and in fact ```rake``` can be run with no issues.
 
+
+## Migration
+
+### Migrating from 1.x to 2.x
+
+2.x was a major rewrite of the library that avoids using classes as Singletons.  In addition, in 2.x the client facing interfaces have been greatly simplified.
+
+### Authentication
+
+Instead of:
+```
+Todoist::Util::Config.token = "my token"
+```
+
+Use:
+
+```
+@client = Todoist::Client.create_client_by_token("my token")
+```
+
+### Calling Services
+
+Instead of:
+
+```
+@manager = Todoist::Sync::Items.new
+@manager.collection
+```
+
+Use:
+```
+@client.sync_items.collection
+```
+
+### Synchronization
+
+Instead of:
+
+```
+Todoist::Util::CommandSynchronizer.sync
+```
+
+Use:
+
+```
+@client.sync
+```
+
+
 ## Version History
 
 * 0.2.1: Major refactoring of library to support implementations that require multi-user support in a concurrent environment (e.g. Rails app).  The previous implementation relied heavily on class singletons.  Internally, the code has been cleaned up significantly.  Due to the scale of changes, 0.2.1 is not compatible 0.1.x versions of the library.
