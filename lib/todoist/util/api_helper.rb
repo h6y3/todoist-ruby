@@ -67,8 +67,8 @@ module Todoist
         return object
       end
 
-      def get_response(command, params = {})
-        @network_helper.get_response(command, params)
+      def get_response(command, params = {}, token = true)
+        @network_helper.get_response(command, params, token)
       end
 
       def get_multipart_response(command, params)

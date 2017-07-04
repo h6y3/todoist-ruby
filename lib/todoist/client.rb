@@ -10,8 +10,8 @@ module Todoist
       # TODO:  Need to write a unit test for this
       def self.create_client_by_login(email, password)
         client = Client.new
-        result = api_helper.get_response(Config::TODOIST_USER_LOGIN_COMMAND, {email: email, password: password}, false)
-        user = ParseHelper.make_object(result)
+        result = client.api_helper.get_response(Config::TODOIST_USER_LOGIN_COMMAND, {email: email, password: password}, false)
+        user = Todoist::Util::ParseHelper.make_object(result)
         client.token = user.token
         client
       end
