@@ -14,8 +14,6 @@ describe Todoist::Sync::Reminders do
 
   before do
     @client = load_client
-    @client.sync_reminders = Todoist::Sync::Reminders.new
-    @client.sync_items = Todoist::Sync::Items.new
   end
 
   it "is able to get reminders" do

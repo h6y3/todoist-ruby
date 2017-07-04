@@ -15,15 +15,8 @@ describe Todoist::Sync::Projects do
 
   before do
     @client = load_client  
-    @project = @client.sync_projects.add({name: "Project1"})
+   
   end
-
-  after do
-    VCR.use_cassette("projects_after") do    
-      @client.sync_projects.delete([@project])
-      @client.sync
-    end
-  end  
 
   it "is able to get projects" do
     VCR.use_cassette("projects_is_able_to_get_projects") do
@@ -34,11 +27,14 @@ describe Todoist::Sync::Projects do
 
   it "is able to archive and unarchive projects" do
     VCR.use_cassette("projects_is_able_to_archive_and_unarchive_projects") do
-      expect(@project).to be_truthy
-      result = @client.sync_projects.archive([@project])
+      project = @client.sync_projects.add({name: "Project1"})
+      expect(project).to be_truthy
+      result = @client.sync_projects.archive([project])
       expect(result).to be_truthy
-      result = @client.sync_projects.unarchive([@project])
+      result = @client.sync_projects.unarchive([project])
       expect(result).to be_truthy
+      @client.sync_projects.delete([project])
+      @client.sync
     end
   end
 
@@ -57,40 +53,43 @@ describe Todoist::Sync::Projects do
 
   it "is able to update multiple orders and indents" do
     VCR.use_cassette("projects_is_able_to_update_multiple_orders_and_indents") do
-      expect(@project).to be_truthy
+      project = @client.sync_projects.add({name: "Project1"})
+      expect(project).to be_truthy
       project2 = @client.sync_projects.add({name: "Project2"})
   
       # Restore the projects fully
   
       project_collection = @client.sync_projects.collection
   
-      @project = project_collection[@project.id]
+      project = project_collection[project.id]
       project2 = project_collection[project2.id]
   
   
       # Keep track of original values
-      project_order = @project.item_order
+      project_order = project.item_order
       project_order2 = project2.item_order
   
       # Swap orders
-      @project.item_order = project_order2
+      project.item_order = project_order2
       project2.item_order = project_order
   
-      # Indent @project
-      @project.indent = 2
+      # Indent project
+      project.indent = 2
   
-      @client.sync_projects.update_multiple_orders_and_indents([@project, project2])
+      @client.sync_projects.update_multiple_orders_and_indents([project, project2])
       project_collection = @client.sync_projects.collection
   
       # Check to make sure newly retrieved object values match old ones
   
-      expect(project_collection[@project.id].item_order).to eq(project_order2)
+      expect(project_collection[project.id].item_order).to eq(project_order2)
       expect(project_collection[project2.id].item_order).to eq(project_order)
-      expect(project_collection[@project.id].indent).to eq(2)
+      expect(project_collection[project.id].indent).to eq(2)
   
       # Clean up extra project
   
       @client.sync_projects.delete([project2])
+      @client.sync_projects.delete([project])
+      @client.sync
     end
     
 
