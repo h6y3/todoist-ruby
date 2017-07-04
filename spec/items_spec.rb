@@ -82,8 +82,8 @@ describe Todoist::Sync::Items do
    
    it "is able to move" do
     VCR.use_cassette("items_is_able_to_move") do
-      project_manager = Todoist::Sync::Projects.new
-      project = project_manager.add({name: "Item_Move_Test_To"})
+      
+      project = @client.sync_projects.add({name: "Item_Move_Test_To"})
       item = @client.sync_items.add({content: "ItemMove"})
       items_list =  @client.sync_items.collection
       queried_object = items_list[item.id]
@@ -92,7 +92,7 @@ describe Todoist::Sync::Items do
       queried_object = items_list[item.id]
       expect(queried_object.project_id).to eq(project.id)
 
-      project_manager.delete([project])
+      @client.sync_projects.delete([project])
       @client.sync_items.delete([item])
       @client.sync
     end
