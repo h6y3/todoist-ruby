@@ -14,15 +14,9 @@ describe Todoist::Sync::Labels do
 
   before do
     @client = load_client  
-    @label = @client.sync_labels.add({name: "Label1"})
   end
 
-  after do
-    VCR.use_cassette("labels_after") do
-      @client.sync_labels.delete(@label)
-      @client.sync
-    end
-  end  
+
 
   it "is able to get labels" do
     VCR.use_cassette("labels_is_able_to_get_labels") do
@@ -81,6 +75,8 @@ describe Todoist::Sync::Labels do
       # Clean up extra label
   
       @client.sync_labels.delete(label2)
+      @client.sync_labels.delete(label)
+      @client.sync
     end
   end
   
