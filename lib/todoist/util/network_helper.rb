@@ -3,6 +3,7 @@ require "json"
 require "todoist/config"
 require 'net/http/post/multipart'
 require 'mimemagic'
+require 'openssl'
 
 module Todoist
   module Util

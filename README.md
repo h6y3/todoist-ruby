@@ -232,7 +232,7 @@ Use:
 
 
 ## Version History
-
+* 0.2.2: For some code paths, it seems OpenSSL does not get loaded.  Added require 'openssl' to network helper
 * 0.2.1: Major refactoring of library to support implementations that require multi-user support in a concurrent environment (e.g. Rails app).  The previous implementation relied heavily on class singletons.  Internally, the code has been cleaned up significantly.  Due to the scale of changes, 0.2.1 is not compatible 0.1.x versions of the library.
 * 0.1.3: Changed ```Todoist::Sync``` managers so that the update method uses a hash instead of an OpenStruct.  The OpenStruct creates errors when an OpenStruct passed from a previous call is used.  The hash helps the caller make fewer mistakes.
 * 0.1.2: Renamed method ```Todoist::Util::ParseHelper.make_objects_as_array``` to ```Todoist::Util::ParseHelper.make_objects_as_hash``` to reflect the fact that it was actually returning hashes.  Added the aforementioned deleted method to return arrays and finally altered ```Todoist::Misc::Completed``` to return objects as arrays instead of hashes due to the fact that recurring completed items were being de-duped unintentionally and data was being lost as a result.
