@@ -77,7 +77,7 @@ Before you make any API calls, you **must** create a client using one of two met
 
 #### Token
 
-New tokens can be generated at the [Todoist App Management portal](https://developer.todoist.com/appconsole.html).  Once a token has been acquired you can create a client by calling:
+New tokens can be generated at the [Todoist App Management portal](https://developer.todoist.com/appconsole.html) or [General API token](https://todoist.com/prefs/integrations).  Once a token has been acquired you can create a client by calling:
 
 ```ruby
 @client = Todoist::Client.create_client_by_token("my token")
