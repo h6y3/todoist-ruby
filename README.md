@@ -147,7 +147,7 @@ The library provides two defenses against this.
 If an ```HTTP 429 Too Many Requests``` is received, the library can wait for a period of time and then retry with an exponential backoff.  To configure this parameter:
 
 ```ruby
-Todoist::Util::Config.retry_time = 40
+Todoist::Config.retry_time = 40
 # Default is 20s, adds a 40s delay
 ```
 
@@ -156,7 +156,7 @@ Todoist::Util::Config.retry_time = 40
 To set an artifical delay between sync requests:
 
 ```ruby
-Todoist::Util::Config.delay_between_requests = 2
+Todoist::Config.delay_between_requests = 2
 # Default is 0, adds a 2s delay
 ```
 
@@ -193,7 +193,7 @@ Once tests pass cleanly, subsquent runs that do not change the network requests 
 
 Instead of:
 ```
-Todoist::Util::Config.token = "my token"
+Todoist::Config.token = "my token"
 ```
 
 Use:
