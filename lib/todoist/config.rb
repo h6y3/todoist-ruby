@@ -1,7 +1,7 @@
 module Todoist
   class Config
-    TODOIST_API_URL = "https://todoist.com/API/v7"
-    
+    TODOIST_API_URL = "https://api.todoist.com/sync/v8"
+
     # List of commands supported
     @@command_list = [
       TODOIST_SYNC_COMMAND = "/sync",
@@ -24,13 +24,13 @@ module Todoist
       TODOIST_BACKUPS_GET_COMMAND = "/backups/get",
       TODOIST_USER_LOGIN_COMMAND = "/user/login"
     ]
-    
+
     # Map of commands to URIs
     @@uri = nil
-    
+
     # Artificial delay between requests to avoid API throttling
     @@delay_between_requests = 0
-    
+
     # Should API throttling happen (HTTP Error 429), retry_time between requests
     # with exponential backoff
     @@retry_time = 20
@@ -42,11 +42,11 @@ module Todoist
     def self.retry_time
       @@retry_time
     end
-    
+
     def self.delay_between_requests=(delay_between_requests)
       @@delay_between_requests = delay_between_requests
     end
-    
+
     def self.delay_between_requests
       @@delay_between_requests
     end

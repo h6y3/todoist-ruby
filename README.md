@@ -96,9 +96,9 @@ There are two ways to force a sync in the API:
 
 When objects are called using the ```add``` methods, a shallow object is created with a temporary id accessible by sending an ```id``` message.  Once any of the above synchronization methods are called above, the ids are updated via a callback with their actual ids so they can be used in subsequent calls.
 
-#### Creating an item 
+#### Creating an item
 
-```ruby 
+```ruby
 update_item = @client.sync_items.add({content: "Item3"})     
 ## At this time update_item has a temporary id
 
@@ -116,7 +116,7 @@ queried_object = items_list[update_item.id]
 # As is the case with other side-effects, issuing the call does not send the request immediately.  
 
 @client.sync     
-# Manually calling sync deletes the item 
+# Manually calling sync deletes the item
 ```
 
 For more detailed examples, please review the unit tests located in the ```spec``` directory.
@@ -232,6 +232,7 @@ Use:
 
 
 ## Version History
+* 0.2.3: Updated to v8 endpoints
 * 0.2.2: For some code paths, it seems OpenSSL does not get loaded.  Added require 'openssl' to network helper
 * 0.2.1: Major refactoring of library to support implementations that require multi-user support in a concurrent environment (e.g. Rails app).  The previous implementation relied heavily on class singletons.  Internally, the code has been cleaned up significantly.  Due to the scale of changes, 0.2.1 is not compatible 0.1.x versions of the library.
 * 0.1.3: Changed ```Todoist::Sync``` managers so that the update method uses a hash instead of an OpenStruct.  The OpenStruct creates errors when an OpenStruct passed from a previous call is used.  The hash helps the caller make fewer mistakes.
@@ -246,4 +247,3 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/h6y3/t
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
