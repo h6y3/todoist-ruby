@@ -1,9 +1,9 @@
 module Todoist
-    class Client    
+    class Client
 
       def self.create_client_by_token(token)
         client = Client.new
-        client.token = token 
+        client.token = token
         client
       end
 
@@ -17,13 +17,13 @@ module Todoist
       end
 
       def token=(token)
-        @token = token
+        @token = token.chomp
       end
-      
+
       def token
         @token
       end
-      
+
       def sync
         @api_helper.sync
       end
@@ -112,7 +112,7 @@ module Todoist
       def initialize
         @api_helper = Todoist::Util::ApiHelper.new(self)
       end
-      
+
 
 
     end
