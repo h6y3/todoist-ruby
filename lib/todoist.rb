@@ -19,7 +19,6 @@ require "todoist/misc/items"
 require "todoist/misc/quick"
 require "todoist/misc/activity"
 require "todoist/misc/backups"
-require "todoist/misc/query"
 
 module Todoist
 
