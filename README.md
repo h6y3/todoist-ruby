@@ -1,6 +1,6 @@
 # Todoist Ruby
 
-This is an unofficial client library that interfaces with the [Todoist API](https://developer.todoist.com/).  
+This is an unofficial client library that interfaces with the [Todoist API](https://developer.todoist.com/sync/v8/).  
 
 ## What's implemented
 
@@ -8,21 +8,21 @@ This is an unofficial client library that interfaces with the [Todoist API](http
 
 The "sync" API is almost fully implemented with the exception of collaboration features.  
 
-* [Projects](https://developer.todoist.com/#projects)
-* [Templates](https://developer.todoist.com/#templates)
-* [Items](https://developer.todoist.com/#items)
-* [Labels](https://developer.todoist.com/#labels)
-* [Notes](https://developer.todoist.com/#notes)
-* [Filters](https://developer.todoist.com/#filters)
-* [Reminders](https://developer.todoist.com/#reminders)
+* [Projects](https://developer.todoist.com/sync/v8/#projects)
+* [Templates](https://developer.todoist.com/sync/v8/#templates)
+* [Items](https://developer.todoist.com/sync/v8/#items)
+* [Labels](https://developer.todoist.com/sync/v8/#labels)
+* [Notes](https://developer.todoist.com/sync/v8/#notes)
+* [Filters](https://developer.todoist.com/sync/v8/#filters)
+* [Reminders](https://developer.todoist.com/sync/v8/#reminders)
 
 ### Other APIs
 
-* [Miscellaneous](https://developer.todoist.com/#miscellaneous)
-* [Quick](https://developer.todoist.com/#quick)
-* [Activity](https://developer.todoist.com/#activity)
-* [Uploads](https://developer.todoist.com/#uploads)
-* [Backups](https://developer.todoist.com/#backups)
+* [Miscellaneous](https://developer.todoist.com/sync/v8/#miscellaneous)
+* [Quick](https://developer.todoist.com/sync/v8/#quick)
+* [Activity](https://developer.todoist.com/sync/v8/#activity)
+* [Uploads](https://developer.todoist.com/sync/v8/#uploads)
+* [Backups](https://developer.todoist.com/sync/v8/#backups)
 
 In addition to the above mentioned APIs, there is also an implementation of the "query" method call provided (with limitations documented).
 
@@ -30,10 +30,10 @@ In addition to the above mentioned APIs, there is also an implementation of the 
 
 Generally speaking collaboration features are not supported through this API but contributions are welcome and encouraged primarily due to testing limitations and the requirement to have multiple accounts.  This includes:
 
-* [Emails](https://developer.todoist.com/#emails)
-* [User](https://developer.todoist.com/#user)
-* [Sharing](https://developer.todoist.com/#sharing)
-* [Live notifications](https://developer.todoist.com/#live-notifications)
+* [Emails](https://developer.todoist.com/sync/v8/#emails)
+* [User](https://developer.todoist.com/sync/v8/#user)
+* [Sharing](https://developer.todoist.com/sync/v8/#sharing)
+* [Live notifications](https://developer.todoist.com/sync/v8/#live-notifications)
 
 ## Installation
 
@@ -232,6 +232,7 @@ Use:
 
 
 ## Version History
+* 0.2.4: Numerous bug fixes to address v7 to v8 changes that go beyond just an endpoint change.  Passing all specs.
 * 0.2.3: Updated to v8 endpoints
 * 0.2.2: For some code paths, it seems OpenSSL does not get loaded.  Added require 'openssl' to network helper
 * 0.2.1: Major refactoring of library to support implementations that require multi-user support in a concurrent environment (e.g. Rails app).  The previous implementation relied heavily on class singletons.  Internally, the code has been cleaned up significantly.  Due to the scale of changes, 0.2.1 is not compatible 0.1.x versions of the library.

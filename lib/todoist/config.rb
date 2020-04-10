@@ -5,7 +5,6 @@ module Todoist
     # List of commands supported
     @@command_list = [
       TODOIST_SYNC_COMMAND = "/sync",
-      TODOIST_QUERY_COMMAND = "/query",
       TODOIST_TEMPLATES_IMPORT_INTO_PROJECT_COMMAND = "/templates/import_into_project",
       TODOIST_TEMPLATES_EXPORT_AS_FILE_COMMAND = "/templates/export_as_file",
       TODOIST_TEMPLATES_EXPORT_AS_URL_COMMAND = "/templates/export_as_url",
