@@ -149,7 +149,6 @@ describe Todoist::Sync::Items do
       queried_object = items_list[item.id]
 
       due_date_new = queried_object.due
-      binding.pry
       expect(due_date_new).not_to eq(due_date_original)
 
       @client.sync_items.delete([queried_object])

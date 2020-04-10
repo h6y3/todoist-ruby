@@ -30,14 +30,11 @@ describe Todoist::Sync::Labels do
 
       update_label = @client.sync_labels.add({name: "Labels3"})
       expect(update_label).to be_truthy
-      binding.pry
       update_label.color = 30
       result = @client.sync_labels.update({id: update_label.id, color: update_label.color})
       expect(result).to be_truthy
-      binding.pry
       labels_list =  @client.sync_labels.collection
       queried_object = labels_list[update_label.id]
-      binding.pry
       expect(queried_object.color).to eq(30)
       @client.sync_labels.delete(update_label)
       @client.sync
