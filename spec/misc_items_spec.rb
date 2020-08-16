@@ -28,6 +28,17 @@ describe Todoist::Misc::Items do
     end
   end
 
+  it "is able to add a priority item" do
+    VCR.use_cassette("misc_items_is_able_to_add_a_priority_item") do
+      item = @client.misc_items.add_item("Test quick add content", priority: 4)
+      expect(item).to be_truthy
+      expect(item.priority).to eq(4)
+      
+      item_data = @client.misc_items.get_item(item)
+      @client.sync_items.delete([item])
+      @client.sync
+    end
+  end
   
 
 end

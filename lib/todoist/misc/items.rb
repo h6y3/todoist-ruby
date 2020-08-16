@@ -29,7 +29,7 @@ module Todoist
             optional_params.delete("labels")
           end
 
-          params.merge(optional_params)
+          params.merge!(optional_params)
           result = @client.api_helper.get_response(Config::TODOIST_ITEMS_ADD_COMMAND, params)
           item = ParseHelper.make_object(result)
           return item
