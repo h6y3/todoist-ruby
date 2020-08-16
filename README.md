@@ -232,6 +232,7 @@ Use:
 
 
 ## Version History
+* 0.2.5: Fix for Extra params aren't sent when creating a item when using the misc add_item method. (Thank you to @juliend2)
 * 0.2.4: Numerous bug fixes to address v7 to v8 changes that go beyond just an endpoint change.  Passing all specs.
 * 0.2.3: Updated to v8 endpoints
 * 0.2.2: For some code paths, it seems OpenSSL does not get loaded.  Added require 'openssl' to network helper
