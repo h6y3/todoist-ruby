@@ -107,7 +107,7 @@ describe Todoist::Sync::Items do
       @client.sync_items.complete(queried_object)
       items_list =  @client.sync_items.collection
       queried_object = items_list[item.id]
-      expect(queried_object.checked).to eq(1)
+      expect(queried_object.checked).to eq(true)
       @client.sync_items.delete([queried_object])
       @client.sync
     end
@@ -123,13 +123,13 @@ describe Todoist::Sync::Items do
       @client.sync_items.complete(queried_object)
       items_list =  @client.sync_items.collection
       queried_object = items_list[item.id]
-      expect(queried_object.checked).to eq(1)
+      expect(queried_object.checked).to eq(true)
 
       # Uncomplete the item
       @client.sync_items.uncomplete(queried_object)
       items_list =  @client.sync_items.collection
       queried_object = items_list[item.id]
-      expect(queried_object.checked).to eq(0)
+      expect(queried_object.checked).to eq(false)
 
       @client.sync_items.delete([queried_object])
       @client.sync
@@ -138,10 +138,9 @@ describe Todoist::Sync::Items do
 
   it "is able to complete a recurring task" do
     VCR.use_cassette("items_is_able_to_complete_a_recurring_task") do
-      item = @client.sync_items.add({content: "ItemCompleteRecurring", date_string: "every day @10" })
+      item = @client.sync_items.add({content: "ItemCompleteRecurring", due: {string: "ev 2 days"}})
       items_list =  @client.sync_items.collection
       queried_object = items_list[item.id]
-
       due_date_original = queried_object.due
 
       @client.sync_items.complete_recurring(queried_object)
@@ -165,7 +164,7 @@ describe Todoist::Sync::Items do
       @client.sync_items.close(queried_object)
       items_list =  @client.sync_items.collection
       queried_object = items_list[item.id]
-      expect(queried_object.checked).to eq(1)
+      expect(queried_object.checked).to eq(true)
       @client.sync_items.delete([queried_object])
       @client.sync
     end

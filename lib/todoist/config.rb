@@ -1,6 +1,6 @@
 module Todoist
   class Config
-    TODOIST_API_URL = "https://api.todoist.com/sync/v8"
+    TODOIST_API_URL = "https://api.todoist.com/sync/v9"
 
     # List of commands supported
     @@command_list = [

@@ -34,7 +34,7 @@ describe Todoist::Misc::Templates do
       project = @client.sync_projects.add({name: "TemplatesExport"})
       @client.sync_projects.collection
       file = @client.misc_templates.export_as_file(project)
-      expect(file).to include("TYPE,CONTENT,PRIORITY,INDENT,AUTHOR,RESPONSIBLE,DATE,DATE_LANG,TIMEZONE")
+      expect(file).to include("TYPE,CONTENT,DESCRIPTION,PRIORITY,INDENT,AUTHOR,RESPONSIBLE,DATE,DATE_LANG,TIMEZONE")
       @client.sync_projects.delete([project])
       @client.sync
     end
