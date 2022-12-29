@@ -29,6 +29,7 @@ module Todoist
 
       def configure_request(command, params)
         request = Net::HTTP::Post.new(Config.getURI()[command].request_uri)
+        request['Authorization'] = 'Bearer ' + params[:token]
         request.set_form_data(params)
         return request
       end
