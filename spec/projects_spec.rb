@@ -45,7 +45,6 @@ describe Todoist::Sync::Projects do
       result = @client.sync_projects.update(id: update_project.id, name: update_project.name)
       expect(result).to be_truthy
       queried_object = @client.sync_projects.collection[update_project.id]
-      binding.pry
       expect(queried_object.name).to eq(update_project.name)
       @client.sync_projects.delete([update_project])
       @client.sync
