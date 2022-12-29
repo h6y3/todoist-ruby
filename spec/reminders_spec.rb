@@ -28,17 +28,16 @@ describe Todoist::Sync::Reminders do
       reminder_item = @client.sync_items.add({content: "ItemForReminderTest"})
       @client.sync_items.collection
       add_reminder = @client.sync_reminders.add({item_id: reminder_item.id,
-        service: "email", type: "absolute", due: {string: "tomorrow"}})
+         type: "absolute", due: {string: "tomorrow"}})
       expect(add_reminder).to be_truthy
       reminders_list =  @client.sync_reminders.collection
       queried_object = reminders_list[add_reminder.id]
-      binding.pry
       expect(queried_object.item_id).to eq(reminder_item.id)
-      queried_object.service = "mobile"
+      queried_object.due["string"] = "next week"
       @client.sync_reminders.update({id: queried_object.id, service: queried_object.service})
       reminders_list =  @client.sync_reminders.collection
       queried_object = reminders_list[queried_object.id]
-      expect(queried_object.service).to eq("mobile")
+      expect(queried_object.due["string"]).to eq("next week")
 
       @client.sync_items.delete([reminder_item])
       @client.sync_reminders.delete(add_reminder)
