@@ -35,7 +35,7 @@ describe Todoist::Sync::Labels do
       expect(result).to be_truthy
       labels_list =  @client.sync_labels.collection
       queried_object = labels_list[update_label.id]
-      expect(queried_object.color).to eq(30)
+      expect(queried_object.color).to eq("berry_red")
       @client.sync_labels.delete(update_label)
       @client.sync
 
