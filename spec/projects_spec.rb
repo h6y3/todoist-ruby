@@ -33,7 +33,7 @@ describe Todoist::Sync::Projects do
       expect(result).to be_truthy
       result = @client.sync_projects.unarchive([project])
       expect(result).to be_truthy
-      @client.sync_projects.delete([project])
+      @client.sync_projects.delete(project.id)
       @client.sync
     end
   end
@@ -46,7 +46,7 @@ describe Todoist::Sync::Projects do
       expect(result).to be_truthy
       queried_object = @client.sync_projects.collection[update_project.id]
       expect(queried_object.name).to eq(update_project.name)
-      @client.sync_projects.delete([update_project])
+      @client.sync_projects.delete(update_project.id)
       @client.sync
     end
   end
@@ -87,12 +87,28 @@ describe Todoist::Sync::Projects do
 
       # Clean up extra project
 
-      @client.sync_projects.delete([project2])
-      @client.sync_projects.delete([project])
+      @client.sync_projects.delete(project2.id)
+      @client.sync_projects.delete(project.id)
       @client.sync
     end
 
 
+  end
+
+  it "is able to delete a project" do
+    VCR.use_cassette("projects_is_able_to_delete_a_project") do
+      project = @client.sync_projects.add({name: "Project-to-be-deleted"})
+      expect(project).to be_truthy
+      projects_list =  @client.sync_projects.collection
+      queried_object = projects_list[project.id]
+      expect(queried_object.name).to eq("Project-to-be-deleted")
+      @client.sync_projects.delete(project.id)
+      @client.sync
+
+      projects_list =  @client.sync_projects.collection
+      queried_object = projects_list[project.id]
+      expect(queried_object.is_deleted).to eq(true)
+    end
   end
 
 end

@@ -15,10 +15,9 @@ module Todoist
         return @client.api_helper.add(args, "project_add")
       end
 
-      # Delete projects given an array of projects
-      def delete(projects)
-        project_ids = projects.collect { |project| project.id }   
-        args = {ids: project_ids.to_json}
+      # Delete a project given a project id
+      def delete(project_id)
+        args = {id: project_id}
         return @client.api_helper.command(args, "project_delete")
       end
 

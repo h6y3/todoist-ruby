@@ -18,10 +18,9 @@ module Todoist
           return @client.api_helper.command(args, "item_update")
         end
 
-        # Delete items given an array of items
-        def delete(items)
-          item_ids = items.collect { |item| item.id }
-          args = {ids: item_ids.to_json}
+        # Delete an item given an item id
+        def delete(item_id)
+          args = {id: item_id}
           return @client.api_helper.command(args, "item_delete")
         end
 
