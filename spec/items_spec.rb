@@ -33,7 +33,7 @@ describe Todoist::Sync::Items do
       items_list =  @client.sync_items.collection
       queried_object = items_list[update_item.id]
       expect(queried_object.priority).to eq(2)
-      @client.sync_items.delete([update_item])
+      @client.sync_items.delete(update_item.id)
       @client.sync
     end
   end
@@ -74,7 +74,8 @@ describe Todoist::Sync::Items do
 
       # Clean up extra item
 
-      @client.sync_items.delete([item, item2])
+      @client.sync_items.delete(item.id)
+      @client.sync_items.delete(item2.id)
       @client.sync
     end
 
@@ -92,8 +93,8 @@ describe Todoist::Sync::Items do
       queried_object = items_list[item.id]
       expect(queried_object.project_id).to eq(project.id)
 
-      @client.sync_projects.delete([project])
-      @client.sync_items.delete([item])
+      @client.sync_projects.delete(project.id)
+      @client.sync_items.delete(item.id)
       @client.sync
     end
   end
@@ -108,7 +109,7 @@ describe Todoist::Sync::Items do
       items_list =  @client.sync_items.collection
       queried_object = items_list[item.id]
       expect(queried_object.checked).to eq(true)
-      @client.sync_items.delete([queried_object])
+      @client.sync_items.delete(queried_object.id)
       @client.sync
     end
   end
@@ -131,7 +132,7 @@ describe Todoist::Sync::Items do
       queried_object = items_list[item.id]
       expect(queried_object.checked).to eq(false)
 
-      @client.sync_items.delete([queried_object])
+      @client.sync_items.delete(queried_object.id)
       @client.sync
     end
   end
@@ -150,7 +151,7 @@ describe Todoist::Sync::Items do
       due_date_new = queried_object.due
       expect(due_date_new).not_to eq(due_date_original)
 
-      @client.sync_items.delete([queried_object])
+      @client.sync_items.delete(queried_object.id)
       @client.sync
     end
   end
@@ -165,7 +166,7 @@ describe Todoist::Sync::Items do
       items_list =  @client.sync_items.collection
       queried_object = items_list[item.id]
       expect(queried_object.checked).to eq(true)
-      @client.sync_items.delete([queried_object])
+      @client.sync_items.delete(queried_object.id)
       @client.sync
     end
   end
@@ -181,9 +182,26 @@ describe Todoist::Sync::Items do
       items_list =  @client.sync_items.collection
       queried_object = items_list[item.id]
       expect(queried_object.day_order).to eq(1000)
-      @client.sync_items.delete([queried_object])
+      @client.sync_items.delete(queried_object.id)
       @client.sync
     end
   end
+
+  it "is able to delete an item" do
+    VCR.use_cassette("items_is_able_to_delete_an_item") do
+      item = @client.sync_items.add({content: "Item-to-be-deleted"})
+      expect(item).to be_truthy
+      items_list =  @client.sync_items.collection
+      queried_object = items_list[item.id]
+      expect(queried_object.content).to eq("Item-to-be-deleted")
+      @client.sync_items.delete(item.id)
+      @client.sync
+
+      items_list =  @client.sync_items.collection
+      queried_object = items_list[item.id]
+      expect(queried_object.is_deleted).to eq(true)
+    end
+  end
+
 
 end

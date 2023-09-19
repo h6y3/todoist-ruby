@@ -38,12 +38,12 @@ module Todoist
     	def self.pop_uuid(resource)
         path = "fixtures/uuid/#{@@type}_#{resource}.yml"
         # File does not exist
-        if !File.exists?(path)
+        if !File.exist?(path)
           100.times do
             @@uuids[resource] << SecureRandom.uuid
-          end  
-          File.write(path, @@uuids[resource].to_yaml) 
-        elsif File.exists?(path) && @@uuids[resource].empty?
+          end
+          File.write(path, @@uuids[resource].to_yaml)
+        elsif File.exist?(path) && @@uuids[resource].empty?
           @@uuids[resource] = YAML.load_file(path)
         end	      
         
