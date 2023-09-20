@@ -232,6 +232,7 @@ Use:
 
 
 ## Version History
+* 0.2.6: Fixed File.exists? to File.exist.  Updated deletion API call for items and projects with updated tests.  Special thank you to @mtantawy for the pull request and updates!
 * 0.2.5: Fix for Extra params aren't sent when creating a item when using the misc add_item method. (Thank you to @juliend2)
 * 0.2.4: Numerous bug fixes to address v7 to v8 changes that go beyond just an endpoint change.  Passing all specs.
 * 0.2.3: Updated to v8 endpoints
